@@ -12,7 +12,14 @@ const store = createStore({
             nationality: '',
             identification: '',
             document: '',
+            validName: 'pending',
+            validLastname: 'pending',
+            validNationality: 'pending',
+            validIdentification: 'pending',
+            validDocument: 'pending',
             language: 'english',
+            enableButton: null,
+            users: [],
         };
     },
 });
