@@ -12,23 +12,30 @@ import App from './App.vue';
 const store = createStore({
     state() {
         return {
-            // inputs
-            name: '',
-            lastname: '',
-            nationality: '',
-            identification: '',
-            document: '',
+            user: {
+                fieldName: {
+                    name: '',
+                    validName: 'pending',
+                },
+                fieldLastname: {
+                    lastname: '',
+                    validLastname: 'pending',
+                },
+                fieldNationality: {
+                    nationality: '',
+                    validNationality: 'pending',
+                },
+                fieldIdentification: {
+                    identification: '',
+                    validIdentification: 'pending',
+                },
+                fieldDocument: {
+                    document: '',
+                    validDocument: 'pending',
+                },
+            },
 
-            //validate inputs
-            validName: 'pending',
-            validLastname: 'pending',
-            validNationality: 'pending',
-            validIdentification: 'pending',
-            validDocument: 'pending',
-
-            //back o continue the form
             continue: 'form',
-
             language: 'english',
             users: [],
         };

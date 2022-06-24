@@ -1,30 +1,30 @@
 <template>
   <div class="form-review">
     <label for="name">Name</label>
-    <h3>{{ $store.state.name }}</h3>
+    <h3>{{ $store.state.user.fieldName.name }}</h3>
   </div>
   <div class="form-review">
     <label for="lastname">Lastname</label>
-    <h3>{{ $store.state.lastname }}</h3>
+    <h3>{{ $store.state.user.fieldLastname.lastname }}</h3>
   </div>
   <div class="form-review">
     <label for="nationality">Nationality</label>
-    <h3 :class="{upper: upper, cap: !upper}">{{ $store.state.nationality }}</h3>
+    <h3 :class="{upper: upper, cap: !upper}">{{ $store.state.user.fieldNationality.nationality }}</h3>
   </div>
   <div class="form-review">
     <label for="identification">Identification</label>
-    <h3 class="identification">{{ $store.state.identification }}</h3>
+    <h3 class="identification">{{ $store.state.user.fieldIdentification.identification }}</h3>
   </div>
   <div class="form-review">
     <label for="document">Document</label>
-    <h3>{{ $store.state.document }}</h3>
+    <h3>{{ $store.state.user.fieldDocument.document }}</h3>
   </div>
 </template>
 
 <script>
 export default {
     computed: {
-        upper() { return this.$store.state.nationality.length < 4 ? true : false },
+        upper() { return this.$store.state.user.fieldNationality.nationality.length < 4 ? true : false },
     }
 }
 </script>

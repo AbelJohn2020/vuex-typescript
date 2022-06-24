@@ -13,34 +13,34 @@
         </div>
     </div>
     <div v-else>
-        <input-field for-label="name" :validation="invalidField($store.state.validName)">
-            <input placeholder="Name" type="text" v-model="$store.state.name" @blur="validateNameField"/>
+        <input-field for-label="name" :validation="invalidField($store.state.user.fieldName.validName)">
+            <input placeholder="Name" type="text" v-model="$store.state.user.fieldName.name" @blur="validateNameField"/>
         </input-field>
         
-        <input-field for-label="lastname" :validation="invalidField($store.state.validLastname)">
-            <input placeholder="Lastname" type="text" v-model="$store.state.lastname" @blur="validateLastnameField"/>
+        <input-field for-label="lastname" :validation="invalidField($store.state.user.fieldLastname.validLastname)">
+            <input placeholder="Lastname" type="text" v-model="$store.state.user.fieldLastname.lastname" @blur="validateLastnameField"/>
         </input-field>
 
-        <input-field for-label="nationality" :validation="invalidField($store.state.validNationality)">
-            <input placeholder="Nationality" type="text" v-model="$store.state.nationality" @blur="validateNationalityField"/>
+        <input-field for-label="nationality" :validation="invalidField($store.state.user.fieldNationality.validNationality)">
+            <input placeholder="Nationality" type="text" v-model="$store.state.user.fieldNationality.nationality" @blur="validateNationalityField"/>
         </input-field>
         
         <div class="form-control" :class="{invalid: invalidIdentification}">
             <label for="identification">document type</label>
-            <select name="identification" id="identification" :value="$store.state.identification" @input="validIdentificationField" @blur="identificationBlur">
+            <select name="identification" id="identification" :value="$store.state.user.fieldIdentification.identification" @input="validIdentificationField" @blur="identificationBlur">
                 <option value="dni">DNI</option>
                 <option value="ce">CE</option>
                 <option value="passport">Passport</option>
             </select>
-            <p v-if="invalidField($store.state.validIdentification)">invalid field</p>
+            <p v-if="invalidField($store.state.user.fieldIdentification.validIdentification)">invalid field</p>
         </div>
         
         <div class="form-control" :class="{invalid: invalidID}">
             <label for="document">ID</label>
-            <input :placeholder="placeHolder" type="text" :value="$store.state.document" :maxlength="maxLengthByOption" :disabled="documentDisabled" @input="validateDocumentField"/>
+            <input :placeholder="placeHolder" type="text" :value="$store.state.user.fieldDocument.document" :maxlength="maxLengthByOption" :disabled="documentDisabled" @input="validateDocumentField"/>
             <p v-if="invalidId('dni')">Invalid field, 8 characters to ID</p>
             <p v-else-if="invalidId('passport')">Invalid field, 9 characters to Passport</p>
-            <p v-else-if="invalidId('ce')">Invalid field, 9 characters to Passport or CE</p>
+            <p v-else-if="invalidId('ce')">Invalid field, 9 characters to CE</p>
         </div>
 
         <div>
@@ -60,28 +60,28 @@ export default {
     },
     computed: {
         maxLengthByOption() {
-            return this.$store.state.identification === 'dni' ? '8' : '9';
+            return this.$store.state.user.fieldIdentification.identification === 'dni' ? '8' : '9';
         },
         documentDisabled() {
-            return this.$store.state.identification === '' ? true : false;
+            return this.$store.state.user.fieldIdentification.identification === '' ? true : false;
         },
         enableSubmit() {
             return this.validateForm() === 'valid' ?  false : true;
         },
         invalidIdentification() {
-            return this.$store.state.validIdentification === 'invalid'
+            return this.$store.state.user.fieldIdentification.validIdentification === 'invalid'
         },
         invalidID() { 
             return this.invalidId('dni') || this.invalidId('passport') || this.invalidId('ce') 
         },
         placeHolder() { 
-            return this.$store.state.identification === "dni" 
+            return this.$store.state.user.fieldIdentification.identification === "dni" 
                     ? 'DNI' 
                     : (
-                        this.$store.state.identification === "ce" 
+                        this.$store.state.user.fieldIdentification.identification === "ce" 
                             ? 'CE' 
                             : (
-                                this.$store.state.identification === "passport"
+                                this.$store.state.user.fieldIdentification.identification === "passport"
                                     ? 'Passport'
                                     : ''
                             )
@@ -100,91 +100,90 @@ export default {
         },
 
         invalidId(option) {
-            return this.invalidField(this.$store.state.validDocument) && this.$store.state.identification === option;
+            return this.invalidField(this.$store.state.user.fieldDocument.validDocument) && this.$store.state.user.fieldIdentification.identification === option;
         },
 
         handleSubmit() {
             console.log(this.validateForm())
 
-            this.$store.state.name = '';
-            this.$store.state.lastname = '';
-            this.$store.state.nationality = '';
-            this.$store.state.identification = '';
-            this.$store.state.document = '';
-            this.$store.state.validName = 'pending';
-            this.$store.state.validLastname = 'pending';
-            this.$store.state.validNationality = 'pending';
-            this.$store.state.validIdentification = 'pending';
-            this.$store.state.validDocument = 'pending';
+            this.$store.state.user.fieldName.name = '';
+            this.$store.state.user.fieldLastname.lastname = '';
+            this.$store.state.user.fieldNationality.nationality = '';
+            this.$store.state.user.fieldIdentification.identification = '';
+            this.$store.state.user.fieldDocument.document = '';
+            this.$store.state.user.fieldName.validName = 'pending';
+            this.$store.state.user.fieldLastname.validLastname = 'pending';
+            this.$store.state.user.fieldNationality.validNationality = 'pending';
+            this.$store.state.user.fieldIdentification.validIdentification = 'pending';
+            this.$store.state.user.fieldDocument.validDocument = 'pending';
             this.$store.state.continue = 'finish';
         },
 
         validateNameField(){
-            const name = this.$store.state.name;
+            const name = this.$store.state.user.fieldName.name;
             const validName = this.regex.test(name);
             
             if(name.length > 1 && validName) {
-                this.$store.state.validName = 'valid';
+                this.$store.state.user.fieldName.validName = 'valid';
             } else {
-                this.$store.state.validName = 'invalid';
+                this.$store.state.user.fieldName.validName = 'invalid';
             }
-            console.log(name)
         },
         validateLastnameField(){
-            const lastname = this.$store.state.lastname;
+            const lastname = this.$store.state.user.fieldLastname.lastname;
             const validLastname = this.regex.test(lastname);
 
             if(lastname.length >= 3 && validLastname) {
-                this.$store.state.validLastname = 'valid';
+                this.$store.state.user.fieldLastname.validLastname = 'valid';
             } else {
-                this.$store.state.validLastname = 'invalid';
+                this.$store.state.user.fieldLastname.validLastname = 'invalid';
             }
         },
         validateNationalityField() {
-            const nationality = this.$store.state.nationality;
+            const nationality = this.$store.state.user.fieldNationality.nationality;
             const validNationality = this.rgx.test(nationality);
             
             if(nationality.length > 1 && validNationality) {
-                this.$store.state.validNationality = 'valid';
+                this.$store.state.user.fieldNationality.validNationality = 'valid';
             } else {
-                this.$store.state.validNationality = 'invalid';
+                this.$store.state.user.fieldNationality.validNationality = 'invalid';
             }
         },
         identificationBlur() {
-            this.$store.state.identification === '' ? this.$store.state.validIdentification = 'invalid' : this.$store.state.validIdentification = 'valid';
+            this.$store.state.user.fieldIdentification.identification === '' ? this.$store.state.user.fieldIdentification.validIdentification = 'invalid' : this.$store.state.user.fieldIdentification.validIdentification = 'valid';
         },
         validIdentificationField(event) {
-            this.$store.state.identification = event.target.value
-            const identification = this.$store.state.identification
+            this.$store.state.user.fieldIdentification.identification = event.target.value
+            const identification = this.$store.state.user.fieldIdentification.identification
             
             if(identification === '') {
-                this.$store.state.validIdentification = 'invalid';
+                this.$store.state.user.fieldIdentification.validIdentification = 'invalid';
             } else {
-                this.$store.state.validIdentification = 'valid';
-                this.$store.state.document = '';
-                this.$store.state.validDocument = 'pending';
+                this.$store.state.user.fieldIdentification.validIdentification = 'valid';
+                this.$store.state.user.fieldDocument.document = '';
+                this.$store.state.user.fieldDocument.validDocument = 'pending';
             }
         },
         validateDocumentField(event) {
-            this.$store.state.document = event.target.value;
+            this.$store.state.user.fieldDocument.document = event.target.value;
             const onlyNumbers = /^[0-9]+$/
-            const validDocument = onlyNumbers.test(this.$store.state.document);
-            const id = this.$store.state.identification;
-            const len = this.$store.state.document.length;
+            const validDocument = onlyNumbers.test(this.$store.state.user.fieldDocument.document);
+            const id = this.$store.state.user.fieldIdentification.identification;
+            const len = this.$store.state.user.fieldDocument.document.length;
 
             if( ((id === 'dni' && len === 8) || ((id === 'passport' || 'ce') && len === 9)) && validDocument) {
-                this.$store.state.validDocument = 'valid'
+                this.$store.state.user.fieldDocument.validDocument = 'valid'
             } else {
-                this.$store.state.validDocument = 'invalid';
+                this.$store.state.user.fieldDocument.validDocument = 'invalid';
             }
         },
 
         validateForm() {
-            const validNameField = this.$store.state.validName;
-            const validLastnameField = this.$store.state.validLastname;
-            const validNationalityField = this.$store.state.validNationality;
-            const validIdentificationField = this.$store.state.validIdentification;
-            const validDocumentField = this.$store.state.validDocument;
+            const validNameField = this.$store.state.user.fieldName.validName;
+            const validLastnameField = this.$store.state.user.fieldLastname.validLastname;
+            const validNationalityField = this.$store.state.user.fieldNationality.validNationality;
+            const validIdentificationField = this.$store.state.user.fieldIdentification.validIdentification;
+            const validDocumentField = this.$store.state.user.fieldDocument.validDocument;
             if(
                 validNameField === 'valid' && 
                 validLastnameField === 'valid' && 
