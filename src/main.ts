@@ -5,6 +5,8 @@ import TheForm from './components/TheForm.vue';
 import TheButton from './components/TheButton.vue';
 import TheRegistration from './components/TheRegistration.vue';
 import FinishForm from './components/FinishForm.vue';
+import InputField from './components/InputField.vue';
+
 import App from './App.vue';
 
 const store = createStore({
@@ -38,7 +40,8 @@ const app = createApp(App);
 app.component('the-form', TheForm);
 app.component('the-button', TheButton);
 app.component('the-registration', TheRegistration);
-app.component('finish-form', FinishForm)
+app.component('finish-form', FinishForm);
+app.component('input-field', InputField);
 
 app.use(store);
 app.mount('#app');

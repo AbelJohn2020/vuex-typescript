@@ -1,34 +1,33 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div v-if="$store.state.continue === 'review'">
+        <div class="review">
+            <div class="edit-box">
+                <the-button type-button="button" name="<" @click="handleBack" class="edit-btn"></the-button>
+            </div>
+            <h2>review</h2>
+        </div>
         <the-registration ></the-registration>
-        <div>
-            <the-button type-button="button" name="back" @click="handleBack"></the-button>
-            <the-button name="submit"></the-button>
+        <div class="submit-box">
+            <the-button :is-disabled="enableSubmit" name="submit"></the-button>
         </div>
     </div>
     <div v-else>
-        <div class="form-control" :class="{invalid: invalidField($store.state.validName)}">
-            <label for="name">Name</label>
-            <input type="text" v-model="$store.state.name" @blur="validateNameField"/>
-            <p v-if="invalidField($store.state.validName)">invalid field</p>
-        </div>
+        <input-field for-label="name" :validation="invalidField($store.state.validName)">
+            <input placeholder="Name" type="text" v-model="$store.state.name" @blur="validateNameField"/>
+        </input-field>
         
-        <div class="form-control" :class="{invalid: invalidField($store.state.validLastname)}">
-            <label for="lastname">Lastname</label>
-            <input type="text" v-model="$store.state.lastname" @blur="validateLastnameField"/>
-            <p v-if="invalidField($store.state.validLastname)">invalid field</p>
-        </div>
-        
-        <div class="form-control" :class="{invalid: invalidField($store.state.validNationality)}">
-            <label for="nationality">Nationality</label>
-            <input type="text" v-model="$store.state.nationality" @blur="validateNationalityField"/>
-            <p v-if="invalidField($store.state.validNationality)">invalid field</p>
-        </div>
+        <input-field for-label="lastname" :validation="invalidField($store.state.validLastname)">
+            <input placeholder="Lastname" type="text" v-model="$store.state.lastname" @blur="validateLastnameField"/>
+        </input-field>
+
+        <input-field for-label="nationality" :validation="invalidField($store.state.validNationality)">
+            <input placeholder="Nationality" type="text" v-model="$store.state.nationality" @blur="validateNationalityField"/>
+        </input-field>
         
         <div class="form-control" :class="{invalid: invalidIdentification}">
-            <label for="identification">Document type</label>
-            <select name="identification" id="identification" v-model="$store.state.identification" @blur="validIdentificationField">
+            <label for="identification">document type</label>
+            <select name="identification" id="identification" :value="$store.state.identification" @input="validIdentificationField" @blur="identificationBlur">
                 <option value="dni">DNI</option>
                 <option value="ce">CE</option>
                 <option value="passport">Passport</option>
@@ -38,7 +37,7 @@
         
         <div class="form-control" :class="{invalid: invalidID}">
             <label for="document">ID</label>
-            <input type="text" :value="$store.state.document" :maxlength="maxLengthByOption" :disabled="documentDisabled" @input="validateDocumentField"/>
+            <input :placeholder="placeHolder" type="text" :value="$store.state.document" :maxlength="maxLengthByOption" :disabled="documentDisabled" @input="validateDocumentField"/>
             <p v-if="invalidId('dni')">Invalid field, 8 characters to ID</p>
             <p v-else-if="invalidId('passport')">Invalid field, 9 characters to Passport</p>
             <p v-else-if="invalidId('ce')">Invalid field, 9 characters to Passport or CE</p>
@@ -46,7 +45,6 @@
 
         <div>
         <the-button :is-disabled="enableSubmit" type-button="button" name="next" @click="handleNext"></the-button>
-        <!-- <button :disabled="enableSubmit" type="button">submit</button> -->
         </div>
     </div>
   </form>
@@ -56,7 +54,7 @@
 export default {
     data() {
         return {
-            regex: /^[a-zñA-ZÑáéíóúÁÉÍÓÚ'.]*$/,
+            regex: /^[a-zñ A-ZÑáéíóúÁÉÍÓÚ'.]*$/,
             rgx: /^[a-zñA-ZÑ]*$/,
         };
     },
@@ -70,8 +68,25 @@ export default {
         enableSubmit() {
             return this.validateForm() === 'valid' ?  false : true;
         },
-        invalidIdentification() {return this.$store.state.validIdentification === 'invalid'},
-        invalidID() { return this.invalidId('dni') || this.invalidId('passport') || this.invalidId('ce') },
+        invalidIdentification() {
+            return this.$store.state.validIdentification === 'invalid'
+        },
+        invalidID() { 
+            return this.invalidId('dni') || this.invalidId('passport') || this.invalidId('ce') 
+        },
+        placeHolder() { 
+            return this.$store.state.identification === "dni" 
+                    ? 'DNI' 
+                    : (
+                        this.$store.state.identification === "ce" 
+                            ? 'CE' 
+                            : (
+                                this.$store.state.identification === "passport"
+                                    ? 'Passport'
+                                    : ''
+                            )
+                    ) 
+        },
     },
     methods: {
         handleNext() {
@@ -89,11 +104,6 @@ export default {
         },
 
         handleSubmit() {
-            console.log('Name: ', this.$store.state.name)
-            console.log('Latname: ', this.$store.state.lastname)
-            console.log('Nationality: ', this.$store.state.nationality)
-            console.log('Identification: ', this.$store.state.identification)
-            console.log('Document: ', this.$store.state.document)
             console.log(this.validateForm())
 
             this.$store.state.name = '';
@@ -118,7 +128,7 @@ export default {
             } else {
                 this.$store.state.validName = 'invalid';
             }
-            console.log(this.$store.state.validName)
+            console.log(name)
         },
         validateLastnameField(){
             const lastname = this.$store.state.lastname;
@@ -140,7 +150,11 @@ export default {
                 this.$store.state.validNationality = 'invalid';
             }
         },
-        validIdentificationField() {
+        identificationBlur() {
+            this.$store.state.identification === '' ? this.$store.state.validIdentification = 'invalid' : this.$store.state.validIdentification = 'valid';
+        },
+        validIdentificationField(event) {
+            this.$store.state.identification = event.target.value
             const identification = this.$store.state.identification
             
             if(identification === '') {
@@ -148,6 +162,7 @@ export default {
             } else {
                 this.$store.state.validIdentification = 'valid';
                 this.$store.state.document = '';
+                this.$store.state.validDocument = 'pending';
             }
         },
         validateDocumentField(event) {
@@ -158,7 +173,7 @@ export default {
             const len = this.$store.state.document.length;
 
             if( ((id === 'dni' && len === 8) || ((id === 'passport' || 'ce') && len === 9)) && validDocument) {
-                this.$store.state.validDocument = 'valid';
+                this.$store.state.validDocument = 'valid'
             } else {
                 this.$store.state.validDocument = 'invalid';
             }
@@ -196,39 +211,11 @@ form {
   background-color: #ffffff;
 }
 
-.form-control {
-  margin: 1rem 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-input,
-select,
-label,
-p {
-    box-sizing: border-box;
-}
-
-label, p {
-  font-weight: bold;
-  text-align: start;
-  background-color: green;
-}
-
-p {
-    text-transform: capitalize;
-    padding: 0;
-    margin: 0.4rem 0 0 0;
-}
-
-.form-control.invalid label,
-.form-control.invalid p {
-  color: red;
-}
-
-.form-control.invalid input {
+.form-control.invalid input,
+.form-control.invalid select {
   border-color: red;
+    box-sizing: border-box;
+
 }
 
 input,
@@ -237,5 +224,39 @@ select {
   font: inherit;
   margin-top: 0.5rem;
   padding: 8px;
+}
+
+.review,
+.submit-box {
+    box-sizing: border-box;
+}
+
+.submit-box {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 2.4rem 0;
+}
+
+.review {
+    display: grid;
+    grid-template-columns: 40% 60%;
+}
+
+.review h2 {
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: bolder;
+    text-align: start;
+}
+
+.edit-btn {
+    padding: 0.2rem 0.8rem;
+    border-radius: 100%;
+    font-size: 22px;
+}
+.edit-box {
+    width: 100%;
+    display: flex;
+    justify-content: start;
 }
 </style>

@@ -1,32 +1,61 @@
 <template>
-  <div class="form-control">
+  <div class="form-review">
     <label for="name">Name</label>
-    <h2>{{ $store.state.name }}</h2>
+    <h3>{{ $store.state.name }}</h3>
   </div>
-
-  <div class="form-control">
-    <label for="lastname">Latname</label>
-    <h2>{{ $store.state.lastname }}</h2>
+  <div class="form-review">
+    <label for="lastname">Lastname</label>
+    <h3>{{ $store.state.lastname }}</h3>
   </div>
+  <div class="form-review">
     <label for="nationality">Nationality</label>
-    <h2>{{ $store.state.nationality }}</h2>
-
-  <div class="form-control">
-    <label for="identification">Identification</label>
-    <h2>{{ $store.state.identification }}</h2>
+    <h3 :class="{upper: upper, cap: !upper}">{{ $store.state.nationality }}</h3>
   </div>
-  <div class="form-control">
+  <div class="form-review">
+    <label for="identification">Identification</label>
+    <h3 class="identification">{{ $store.state.identification }}</h3>
+  </div>
+  <div class="form-review">
     <label for="document">Document</label>
-    <h2>{{ $store.state.document }}</h2>
+    <h3>{{ $store.state.document }}</h3>
   </div>
 </template>
 
 <script>
 export default {
-
+    computed: {
+        upper() { return this.$store.state.nationality.length < 4 ? true : false },
+    }
 }
 </script>
 
-<style>
+<style scoped>
+    .form-review {
+        margin: 1.8rem 0 1rem 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
 
+    .identification,
+    .upper {
+        text-transform: uppercase;
+    }
+
+    .cap {
+        text-transform: capitalize;
+    }
+
+    h3 {
+        padding: 0;
+        margin: 0.4rem 0 1rem 0;
+    }
+
+    label {
+        box-sizing: border-box;
+        font-weight: bold;
+        text-align: start;
+        border-bottom: 1px solid #0076bb;
+        padding: 0 0 8px 0;
+    }
 </style>

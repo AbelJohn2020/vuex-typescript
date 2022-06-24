@@ -24,10 +24,11 @@ button {
   font: inherit;
   border: 1px solid #0076bb;
   background-color: #0076bb;
+  font-weight: bold;
   color: white;
   cursor: pointer;
-  padding: 0.75rem 2rem;
-  border-radius: 30px;
+  padding: 0.44rem 1.2rem;
+  border-radius: 8px;
   text-transform: capitalize;
 }
 
