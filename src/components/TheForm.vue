@@ -1,40 +1,53 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <div class="form-control" :class="{invalid: invalidField($store.state.validName)}">
-      <label for="name">Name</label>
-      <input type="text" v-model="$store.state.name" @blur="validateNameField"/>
-      <p v-if="invalidField($store.state.validName)">invalid field</p>
+    <div v-if="$store.state.continue === 'review'">
+        <the-registration ></the-registration>
+        <div>
+            <the-button type-button="button" name="back" @click="handleBack"></the-button>
+            <the-button name="submit"></the-button>
+        </div>
     </div>
-    <div class="form-control" :class="{invalid: invalidField($store.state.validLastname)}">
-      <label for="lastname">Lastname</label>
-      <input type="text" v-model="$store.state.lastname" @blur="validateLastnameField"/>
-      <p v-if="invalidField($store.state.validLastname)">invalid field</p>
-    </div>
-    <div class="form-control" :class="{invalid: invalidField($store.state.validNationality)}">
-      <label for="nationality">Nationality</label>
-      <input type="text" v-model="$store.state.nationality" @blur="validateNationalityField"/>
-      <p v-if="invalidField($store.state.validNationality)">invalid field</p>
-    </div>
-    <div class="form-control" :class="{invalid: invalidIdentification}">
-      <label for="identification">Document type</label>
-      <select name="identification" id="identification" v-model="$store.state.identification" @blur="validIdentificationField">
-        <option value="dni">DNI</option>
-        <option value="ce">CE</option>
-        <option value="passport">Passport</option>
-      </select>
-      <p v-if="invalidField($store.state.validIdentification)">invalid field</p>
-    </div>
-    <div class="form-control" :class="{invalid: invalidID}">
-      <label for="document">ID</label>
-      <input type="text" :value="$store.state.document" :maxlength="maxLengthByOption" :disabled="documentDisabled" @input="validateDocumentField"/>
-      <p v-if="invalidId('dni')">Invalid field, 8 characters to ID</p>
-      <p v-else-if="invalidId('passport')">Invalid field, 9 characters to Passport</p>
-      <p v-else-if="invalidId('ce')">Invalid field, 9 characters to Passport or CE</p>
+    <div v-else>
+        <div class="form-control" :class="{invalid: invalidField($store.state.validName)}">
+            <label for="name">Name</label>
+            <input type="text" v-model="$store.state.name" @blur="validateNameField"/>
+            <p v-if="invalidField($store.state.validName)">invalid field</p>
+        </div>
+        
+        <div class="form-control" :class="{invalid: invalidField($store.state.validLastname)}">
+            <label for="lastname">Lastname</label>
+            <input type="text" v-model="$store.state.lastname" @blur="validateLastnameField"/>
+            <p v-if="invalidField($store.state.validLastname)">invalid field</p>
+        </div>
+        
+        <div class="form-control" :class="{invalid: invalidField($store.state.validNationality)}">
+            <label for="nationality">Nationality</label>
+            <input type="text" v-model="$store.state.nationality" @blur="validateNationalityField"/>
+            <p v-if="invalidField($store.state.validNationality)">invalid field</p>
+        </div>
+        
+        <div class="form-control" :class="{invalid: invalidIdentification}">
+            <label for="identification">Document type</label>
+            <select name="identification" id="identification" v-model="$store.state.identification" @blur="validIdentificationField">
+                <option value="dni">DNI</option>
+                <option value="ce">CE</option>
+                <option value="passport">Passport</option>
+            </select>
+            <p v-if="invalidField($store.state.validIdentification)">invalid field</p>
+        </div>
+        
+        <div class="form-control" :class="{invalid: invalidID}">
+            <label for="document">ID</label>
+            <input type="text" :value="$store.state.document" :maxlength="maxLengthByOption" :disabled="documentDisabled" @input="validateDocumentField"/>
+            <p v-if="invalidId('dni')">Invalid field, 8 characters to ID</p>
+            <p v-else-if="invalidId('passport')">Invalid field, 9 characters to Passport</p>
+            <p v-else-if="invalidId('ce')">Invalid field, 9 characters to Passport or CE</p>
+        </div>
 
-
-    </div>
-    <div>
-      <button :disabled="enableSubmit">submit</button>
+        <div>
+        <the-button :is-disabled="enableSubmit" type-button="button" name="next" @click="handleNext"></the-button>
+        <!-- <button :disabled="enableSubmit" type="button">submit</button> -->
+        </div>
     </div>
   </form>
 </template>
@@ -61,10 +74,11 @@ export default {
         invalidID() { return this.invalidId('dni') || this.invalidId('passport') || this.invalidId('ce') },
     },
     methods: {
-        handleClickOption(event) {
-            if(event) {
-                console.log('click')
-            }
+        handleNext() {
+            this.$store.state.continue = 'review';
+        },
+        handleBack() {
+            this.$store.state.continue = 'form';
         },
         invalidField(validation) {
             return validation === 'invalid';
@@ -92,6 +106,7 @@ export default {
             this.$store.state.validNationality = 'pending';
             this.$store.state.validIdentification = 'pending';
             this.$store.state.validDocument = 'pending';
+            this.$store.state.continue = 'finish';
         },
 
         validateNameField(){
@@ -198,6 +213,7 @@ p {
 label, p {
   font-weight: bold;
   text-align: start;
+  background-color: green;
 }
 
 p {
@@ -221,21 +237,5 @@ select {
   font: inherit;
   margin-top: 0.5rem;
   padding: 8px;
-}
-
-button {
-  font: inherit;
-  border: 1px solid #0076bb;
-  background-color: #0076bb;
-  color: white;
-  cursor: pointer;
-  padding: 0.75rem 2rem;
-  border-radius: 30px;
-}
-
-button:hover,
-button:active {
-  border-color: #002350;
-  background-color: #002350;
 }
 </style>

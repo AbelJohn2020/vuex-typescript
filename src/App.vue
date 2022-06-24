@@ -1,5 +1,6 @@
 <template>
-  <the-form></the-form>
+  <finish-form v-if="$store.state.continue === 'finish'"></finish-form>
+  <the-form v-else></the-form>
 </template>
 
 <script lang="ts">
