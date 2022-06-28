@@ -50,6 +50,12 @@
 
 <script >
 export default {
+    props: ['user'],
+    // data() {
+    //     return {
+
+    //     };
+    // },
     computed: {
         maxLengthByOption() {
             return this.$store.state.user.fieldIdentification.identification === 'dni' ? '8' : '9';
@@ -158,7 +164,7 @@ form {
 .form-control.invalid input,
 .form-control.invalid select {
   border-color: red;
-    box-sizing: border-box;
+  box-sizing: border-box;
 
 }
 
@@ -176,8 +182,6 @@ select {
 }
 
 .submit-box {
-    display: flex;
-    justify-content: center;
     margin: 0 0 2.4rem 0;
 }
 
@@ -200,7 +204,5 @@ select {
 }
 .edit-box {
     width: 100%;
-    display: flex;
-    justify-content: start;
 }
 </style>
