@@ -40,6 +40,8 @@ type state = {
     regNumbers: RegExp,
     regex: RegExp,
     regNationality: RegExp,
+    maxTickets: number[],
+    tickets: number,
 }
 
 const store = createStore({
@@ -71,7 +73,9 @@ const store = createStore({
             continue: 'form',
             language: 'english',
             users: [],
-
+            
+            maxTickets: Array.from({length: 4}, (_, i) => i + 1),
+            tickets: 0,
             regNumbers: /^[0-9]+$/,
             regex: /^[a-zñ A-ZÑáéíóúÁÉÍÓÚ'.]*$/,
             regNationality: /^[a-zñA-ZÑ]*$/,
@@ -79,6 +83,7 @@ const store = createStore({
     },
     mutations: {
         handleNext(state: state) {
+            console.log(state.user)
             state.continue = 'review';
         },
 

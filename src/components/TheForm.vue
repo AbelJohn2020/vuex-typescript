@@ -67,17 +67,9 @@ export default {
             return this.invalidId('dni') || this.invalidId('passport') || this.invalidId('ce') 
         },
         placeHolder() { 
-            return this.$store.state.user.fieldIdentification.identification === "dni" 
-                    ? 'DNI' 
-                    : (
-                        this.$store.state.user.fieldIdentification.identification === "ce" 
-                            ? 'CE' 
-                            : (
-                                this.$store.state.user.fieldIdentification.identification === "passport"
-                                    ? 'Passport'
-                                    : ''
-                            )
-                    ) 
+            const identification = this.$store.state.user.fieldIdentification.identification;
+            
+            return (identification === "dni") ? 'DNI' : (identification === "ce" ? 'CE' : (identification === "passport" ? 'Passport' : '')) 
         },
     },
     methods: {
@@ -144,9 +136,9 @@ export default {
                 validIdentificationField === 'valid' &&
                 validDocumentField === 'valid'
             ) {
-                return 'valid'
+                return 'valid';
             } else {
-                return 'invalid'
+                return 'invalid';
             }
         },
     }
