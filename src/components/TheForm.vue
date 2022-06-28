@@ -53,7 +53,7 @@ export default {
     props: ['user'],
     // data() {
     //     return {
-
+    //         document: this.user.fieldDocument.document
     //     };
     // },
     computed: {
@@ -122,6 +122,7 @@ export default {
             this.$store.commit('identificationField', identification)
         },
         validateDocumentField(event) {
+            console.log(this.user.fieldDocument, 'user')
             this.$store.state.user.fieldDocument.document = event.target.value;
             const document = this.$store.state.user.fieldDocument.document;
             

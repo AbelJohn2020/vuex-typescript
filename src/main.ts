@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { createStore } from 'vuex';
 
+import MultiForm from './components/MultiForm.vue';
 import TheForm from './components/TheForm.vue';
 import TheButton from './components/TheButton.vue';
 import TheRegistration from './components/TheRegistration.vue';
@@ -10,6 +11,7 @@ import InputField from './components/InputField.vue';
 import App from './App.vue';
 
 type user = {
+    id: number,
     fieldName: {
         name: string,
         validName: string,
@@ -48,6 +50,7 @@ const store = createStore({
     state() {
         return {
             user: {
+                id: 0,
                 fieldName: {
                     name: '',
                     validName: 'pending',
@@ -74,7 +77,7 @@ const store = createStore({
             language: 'english',
             users: [],
             
-            maxTickets: Array.from({length: 4}, (_, i) => i + 1),
+            maxTickets: Array.from({length: 3}, (_, i) => i + 2),
             tickets: 0,
             regNumbers: /^[0-9]+$/,
             regex: /^[a-zñ A-ZÑáéíóúÁÉÍÓÚ'.]*$/,
@@ -97,6 +100,7 @@ const store = createStore({
         
         handleSubmit(state: state) {
             state.user = {
+                id: 0,
                 fieldName: {
                     name: '',
                     validName: 'pending',
@@ -166,11 +170,47 @@ const store = createStore({
             
             state.user.fieldDocument.validDocument = ((len === docLen) && validDocument) ? 'valid' : 'invalid';
         },
+        
+        //------------------------------------- MULTIFORM --------------------------------------------------
+
+        onBlurName(state: state, idx: number) {
+            const name = state.users[idx].fieldName.name;
+            const validName = state.regex.test(name);
+            
+            if(name.length > 1 && validName) {
+                state.users[idx] = {...state.users[idx], fieldName: {...state.users[idx].fieldName, validName: 'valid'}}
+            } else {
+                state.users[idx] = {...state.users[idx], fieldName: {...state.users[idx].fieldName, validName: 'invalid'}}
+            }
+        },
+
+        onBlurLastname(state: state, idx: number) {
+            const lastname = state.users[idx].fieldLastname.lastname;
+            const validLastname = state.regex.test(lastname);
+            
+            if(lastname.length > 1 && validLastname) {
+                state.users[idx] = {...state.users[idx], fieldLastname: {...state.users[idx].fieldLastname, validLastname: 'valid'}}
+            } else {
+                state.users[idx] = {...state.users[idx], fieldLastname: {...state.users[idx].fieldLastname, validLastname: 'invalid'}}
+            }
+        },
+
+        onBlurNationality(state: state, idx: number) {
+            const nationality = state.users[idx].fieldNationality.nationality;
+            const validNationality = state.regNationality.test(nationality);
+            
+            if(nationality.length > 1 && validNationality) {
+                state.users[idx] = {...state.users[idx], fieldNationality: {...state.users[idx].fieldNationality, validNationality: 'valid'}}
+            } else {
+                state.users[idx] = {...state.users[idx], fieldNationality: {...state.users[idx].fieldNationality, validNationality: 'invalid'}}
+            }
+        },
     },
 });
 
 const app = createApp(App);
 
+app.component('multi-form', MultiForm)
 app.component('the-form', TheForm);
 app.component('the-button', TheButton);
 app.component('the-registration', TheRegistration);
