@@ -11,7 +11,7 @@
 export default {
     methods: {
         handleAccept() {
-            this.$store.state.continue = "form"
+            this.$store.commit('handleAccept')
         },
     }
 }

@@ -50,12 +50,6 @@
 
 <script >
 export default {
-    data() {
-        return {
-            regex: /^[a-zñ A-ZÑáéíóúÁÉÍÓÚ'.]*$/,
-            rgx: /^[a-zñA-ZÑ]*$/,
-        };
-    },
     computed: {
         maxLengthByOption() {
             return this.$store.state.user.fieldIdentification.identification === 'dni' ? '8' : '9';
@@ -88,10 +82,10 @@ export default {
     },
     methods: {
         handleNext() {
-            this.$store.state.continue = 'review';
+            this.$store.commit('handleNext');
         },
         handleBack() {
-            this.$store.state.continue = 'form';
+            this.$store.commit('handleBack');
         },
         invalidField(validation) {
             return validation === 'invalid';
@@ -104,73 +98,36 @@ export default {
         handleSubmit() {
             console.log(this.validateForm())
 
-            this.$store.state.user.fieldName.name = '';
-            this.$store.state.user.fieldLastname.lastname = '';
-            this.$store.state.user.fieldNationality.nationality = '';
-            this.$store.state.user.fieldIdentification.identification = '';
-            this.$store.state.user.fieldDocument.document = '';
-            this.$store.state.user.fieldName.validName = 'pending';
-            this.$store.state.user.fieldLastname.validLastname = 'pending';
-            this.$store.state.user.fieldNationality.validNationality = 'pending';
-            this.$store.state.user.fieldIdentification.validIdentification = 'pending';
-            this.$store.state.user.fieldDocument.validDocument = 'pending';
-            this.$store.state.continue = 'finish';
-        },
-
-        identificationField(identification) {
-            if(identification === '') {
-                this.$store.state.user.fieldIdentification.validIdentification = 'invalid';
-            } else {
-                this.$store.state.user.fieldIdentification.validIdentification = 'valid';
-                this.$store.state.user.fieldDocument.document = '';
-                this.$store.state.user.fieldDocument.validDocument = 'pending';
-            }
-        },
-
-        documentField(identification) {
-            return identification === 'dni' ? 8 : 9;
-        },
-
-        validateField(field,  validField){
-            return (field && validField) ? 'valid' : 'invalid';
+            this.$store.commit('handleSubmit')
         },
 
         validateNameField(){
-            const name = this.$store.state.user.fieldName.name;
-            const validName = this.regex.test(name);
-            this.$store.state.user.fieldName.validName = this.validateField(name.length > 1, validName);
+            this.$store.commit('validateNameField');
         },
 
         validateLastnameField(){
-            const lastname = this.$store.state.user.fieldLastname.lastname;
-            const validLastname = this.regex.test(lastname);
-            this.$store.state.user.fieldLastname.validLastname = this.validateField(lastname.length > 1, validLastname);
+            this.$store.commit('validateLastnameField');
 
         },
 
         validateNationalityField() {
-            const nationality = this.$store.state.user.fieldNationality.nationality;
-            const validNationality = this.rgx.test(nationality);
-            this.$store.state.user.fieldNationality.validNationality = this.validateField(nationality.length > 1, validNationality);
+            this.$store.commit('validateNationalityField');
         },
 
         identificationBlur() {
-            const identification = this.$store.state.user.fieldIdentification.identification;
-            this.$store.state.user.fieldIdentification.validIdentification = this.validateField(identification.length > 1, true);
+            this.$store.commit('identificationBlur');
         },
 
         validIdentificationField(event) {
             this.$store.state.user.fieldIdentification.identification = event.target.value
             const identification = this.$store.state.user.fieldIdentification.identification
-            this.identificationField(identification)
+            this.$store.commit('identificationField', identification)
         },
         validateDocumentField(event) {
             this.$store.state.user.fieldDocument.document = event.target.value;
-            const onlyNumbers = /^[0-9]+$/
-            const validDocument = onlyNumbers.test(this.$store.state.user.fieldDocument.document);
-            const id = this.$store.state.user.fieldIdentification.identification;
-            const len = this.$store.state.user.fieldDocument.document.length;
-            this.$store.state.user.fieldDocument.validDocument = this.validateField(len === this.documentField(id), validDocument);
+            const document = this.$store.state.user.fieldDocument.document;
+            
+            this.$store.commit('validateDocumentField', document);
         },
 
         validateForm() {
@@ -179,6 +136,7 @@ export default {
             const validNationalityField = this.$store.state.user.fieldNationality.validNationality;
             const validIdentificationField = this.$store.state.user.fieldIdentification.validIdentification;
             const validDocumentField = this.$store.state.user.fieldDocument.validDocument;
+            
             if(
                 validNameField === 'valid' && 
                 validLastnameField === 'valid' && 
