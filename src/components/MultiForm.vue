@@ -27,20 +27,26 @@
             <input placeholder="Nationality" type="text" :value="user[idx].fieldNationality.nationality" @input="handleInNationality" @blur="onBlurNationality"/>
         </input-field>
 
-        <input-field for-label="document type">
-            <select name="identification" id="identification">
+        <input-field for-label="document type" :validation="invalidField(user[idx].fieldIdentification.validIdentification)">
+            <select name="identification" id="identification" :value="user[idx].fieldIdentification.identification" @input="handleInIdentification" @blur="onBlurIdentification">
                 <option value="dni">DNI</option>
                 <option value="ce">CE</option>
                 <option value="passport">Passport</option>
             </select>
         </input-field>
         
-        <div class="form-control">
+        <div class="form-control" :class="{invalid: invalidID}">
             <label for="document">ID</label>
-            <input type="text" />
-            <!-- <p>8 characters to ID</p>
-            <p>9 characters to Passport</p>
-            <p>9 characters to CE</p> -->
+            <input 
+                :placeholder="placeholderValue" 
+                type="text" :maxlength="maxLengthByOption" 
+                :value="user[idx].fieldDocument.document" 
+                @input="handleInDocument" 
+                :disabled="documentDisabled"
+            />
+            <p v-if="invalidId('dni')">8 characters to ID</p>
+            <p v-else-if="invalidId('passport')">9 characters to Passport</p>
+            <p v-else-if="invalidId('ce')">9 characters to CE</p>
         </div>
 
         <div>
@@ -61,9 +67,28 @@ import { Options, Vue } from "vue-class-component";
             idx: this.id - 1,
         };
     },
+    computed: {
+        maxLengthByOption() {
+            return this.user[this.idx].fieldIdentification.identification === 'dni' ? '8' : '9';
+        },
+        documentDisabled() {
+            return this.user[this.idx].fieldIdentification.identification === '' ? true : false;
+        },
+        placeholderValue() { 
+            const identification = this.user[this.idx].fieldIdentification.identification;
+            
+            return (identification === "dni") ? 'DNI' : (identification === "ce" ? 'CE' : (identification === "passport" ? 'Passport' : '')) 
+        },
+        invalidID() { 
+            return this.invalidId('dni') || this.invalidId('passport') || this.invalidId('ce') 
+        },
+    },
     methods: {
         invalidField(validation: string) {
             return validation === 'invalid';
+        },
+        invalidId(option: string) {
+            return this.invalidField(this.user[this.idx].fieldDocument.validDocument) && this.user[this.idx].fieldIdentification.identification === option;
         },
         handleInName(event: Event) {
             this.user[this.idx] = {...this.user[this.idx], fieldName: {...this.user[this.idx].fieldName, name: (event.target as HTMLInputElement).value}};
@@ -83,7 +108,20 @@ import { Options, Vue } from "vue-class-component";
         onBlurNationality() {
             this.$store.commit('onBlurNationality', this.idx)
         },
-
+        handleInIdentification(event: Event) {
+            const idx = this.idx;
+            this.$store.commit('typeIDField', {event, idx});
+        },
+        onBlurIdentification() {
+            this.$store.commit('onBlurIdentification', this.idx)
+        },
+        handleInDocument(event: Event) {
+            const idx = this.idx;
+            this.$store.commit('documentField', {event, idx});
+        },
+        onBlurDocument() {
+            this.$store.commit('onBlurIdentification', this.idx)
+        },
     }
 })
 

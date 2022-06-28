@@ -173,6 +173,37 @@ const store = createStore({
         
         //------------------------------------- MULTIFORM --------------------------------------------------
 
+        typeIDField(state: state, identification: {event: Event, idx: number}) {
+            const { event, idx } = identification;
+
+            state.users[idx] = { ...state.users[idx], fieldIdentification: { ...state.users[idx].fieldIdentification, identification: (event.target as HTMLInputElement).value }};
+            const idType = state.users[idx].fieldIdentification.identification;
+
+            if(idType === '') {
+                state.users[idx] = { ...state.users[idx], fieldIdentification: { ...state.users[idx].fieldIdentification, validIdentification: 'invalid' }};
+            } else {
+                state.users[idx] = { ...state.users[idx], fieldIdentification: { ...state.users[idx].fieldIdentification, validIdentification: 'valid' }};
+                state.users[idx] = { ...state.users[idx], fieldDocument: { ...state.users[idx].fieldDocument, document: '' }};
+                state.users[idx] = { ...state.users[idx], fieldDocument: { ...state.users[idx].fieldDocument, validDocument: 'pending' }};
+            }
+        },
+
+        documentField(state: state, document: {event: Event, idx: number}) {
+            const { event, idx } = document;
+
+            state.users[idx] = { ...state.users[idx], fieldDocument: { ...state.users[idx].fieldDocument, document: (event.target as HTMLInputElement).value }}
+            const documentValue = state.users[idx].fieldDocument.document;
+            const validDcument = state.regNumbers.test(documentValue);
+            const len = documentValue.length;
+            const doclen = ( state.users[idx].fieldIdentification.identification === 'dni' ) ? 8 : 9
+
+            if((len === doclen) && validDcument) {
+                state.users[idx] = { ...state.users[idx], fieldDocument: { ...state.users[idx].fieldDocument, validDocument: 'valid' }};
+            } else {
+                state.users[idx] = { ...state.users[idx], fieldDocument: { ...state.users[idx].fieldDocument, validDocument: 'invalid' }};
+            }
+        },
+
         onBlurName(state: state, idx: number) {
             const name = state.users[idx].fieldName.name;
             const validName = state.regex.test(name);
@@ -203,6 +234,15 @@ const store = createStore({
                 state.users[idx] = {...state.users[idx], fieldNationality: {...state.users[idx].fieldNationality, validNationality: 'valid'}}
             } else {
                 state.users[idx] = {...state.users[idx], fieldNationality: {...state.users[idx].fieldNationality, validNationality: 'invalid'}}
+            }
+        },
+
+        onBlurIdentification(state: state, idx: number) {
+            const identification = state.users[idx].fieldIdentification.identification;
+            if(identification.length > 1) {
+                state.users[idx] = {...state.users[idx], fieldIdentification: {...state.users[idx].fieldIdentification, validIdentification: 'valid'}}
+            } else {
+                state.users[idx] = {...state.users[idx], fieldIdentification: {...state.users[idx].fieldIdentification, validIdentification: 'invalid'}}
             }
         },
     },
