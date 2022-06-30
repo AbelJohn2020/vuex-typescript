@@ -2,14 +2,23 @@
     <div :key="id" id="form">
         <input-field for-label="name" :validation="invalidField(user[idx].fieldName.validName)">
             <input placeholder="Name" type="text" :value="user[idx].fieldName.name" @input="handleInName" @blur="onBlurName"/>
+            <template #valid>
+                <p v-if="user[idx].fieldName.validName === 'valid'" class="valid-field">valid</p>
+            </template>
         </input-field>
         
         <input-field for-label="lastname" :validation="invalidField(user[idx].fieldLastname.validLastname)">
             <input placeholder="Lastname" type="text" :value="user[idx].fieldLastname.lastname" @input="handleInLastname" @blur="onBlurLastname"/>
+            <template #valid>
+                <p v-if="user[idx].fieldLastname.validLastname === 'valid'" class="valid-field">valid</p>
+            </template>
         </input-field>
 
         <input-field for-label="nationality" :validation="invalidField(user[idx].fieldNationality.validNationality)">
             <input placeholder="Nationality" type="text" :value="user[idx].fieldNationality.nationality" @input="handleInNationality" @blur="onBlurNationality"/>
+            <template #valid>
+                <p v-if="user[idx].fieldNationality.validNationality === 'valid'" class="valid-field">valid</p>
+            </template>
         </input-field>
 
         <input-field for-label="document type" :validation="invalidField(user[idx].fieldIdentification.validIdentification)">
@@ -18,10 +27,16 @@
                 <option value="ce">CE</option>
                 <option value="passport">Passport</option>
             </select>
+            <template #valid>
+                <p v-if="user[idx].fieldIdentification.validIdentification === 'valid'" class="valid-field">valid</p>
+            </template>
         </input-field>
         
         <div class="form-control" :class="{invalid: invalidID}">
-            <label for="document">ID</label>
+            <label for="document" id="for-label">
+                ID
+                <p v-if="user[idx].fieldDocument.validDocument === 'valid'" class="valid-field">valid</p>
+            </label>
             <input 
                 :placeholder="placeholderValue" 
                 type="text" :maxlength="maxLengthByOption" 
@@ -164,5 +179,13 @@ select {
 }
 .edit-box {
     width: 100%;
+}
+
+.valid-field {
+    margin: 0 0 0 8px;
+    padding: 0;
+    color: green;
+    box-sizing: border-box;
+    text-transform: lowercase;
 }
 </style>
