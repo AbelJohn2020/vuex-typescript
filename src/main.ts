@@ -1,11 +1,14 @@
 import { createApp } from 'vue';
 import { createStore } from 'vuex';
 
-import MultiForm from './components/MultiForm.vue';
-import TheButton from './components/TheButton.vue';
-import TheRegistration from './components/TheRegistration.vue';
-import FinishForm from './components/FinishForm.vue';
-import InputField from './components/InputField.vue';
+import MultiForm from './components/Forms/MultiForm.vue';
+import TheButton from './components/UI/TheButton.vue';
+import TheRegistration from './components/Forms/TheRegistration.vue';
+import FinishForm from './components/Forms/FinishForm.vue';
+import InputField from './components/UI/InputField.vue';
+import TektonAirlines from './pages/TektonAirlines.vue';
+import ReviewTitle from './components/UI/ReviewTitle.vue';
+import ShowTheForms from './components/Forms/ShowTheForms.vue';
 
 import App from './App.vue';
 
@@ -86,52 +89,6 @@ const store = createStore({
         };
     },
     mutations: {
-        identificationField(state: state, identification: string) {
-            if(identification === '') {
-                state.user.fieldIdentification.validIdentification = 'invalid';
-            } else {
-                state.user.fieldIdentification.validIdentification = 'valid';
-                state.user.fieldDocument.document = '';
-                state.user.fieldDocument.validDocument = 'pending';
-            }
-        },
-
-
-        validateNameField(state: state) {
-            const name = state.user.fieldName.name;
-            const validName = state.regex.test(name);
-            
-            state.user.fieldName.validName = (name.length > 1 && validName) ? 'valid' : 'invalid';
-        },
-
-        validateLastnameField(state: state) {
-            const lastname = state.user.fieldLastname.lastname;
-            const validLastname = state.regex.test(lastname);
-
-            state.user.fieldLastname.validLastname = (lastname.length > 1 && validLastname) ? 'valid' : 'invalid';
-
-        },
-
-        validateNationalityField(state: state) {
-            const nationality = state.user.fieldNationality.nationality;
-            const validNationality = state.regNationality.test(nationality);
-            state.user.fieldNationality.validNationality = (nationality.length > 1 && validNationality) ? 'valid' : 'invalid';
-        },
-
-        identificationBlur(state: state) {
-            const identification = state.user.fieldIdentification.identification;
-            state.user.fieldIdentification.validIdentification = (identification.length > 1) ? 'valid' : 'invalid';
-        },
-
-        validateDocumentField(state: state, document: string) {
-            const validDocument = state.regNumbers.test(document);
-            const len = state.user.fieldDocument.document.length;
-            const docLen = (state.user.fieldIdentification.identification === 'dni') ? 8 : 9;
-            
-            state.user.fieldDocument.validDocument = ((len === docLen) && validDocument) ? 'valid' : 'invalid';
-        },
-        
-        //------------------------------------- MULTIFORM --------------------------------------------------
         handleBack(state: state) {
             state.continue = 'form';
         },
@@ -288,6 +245,9 @@ app.component('the-button', TheButton);
 app.component('the-registration', TheRegistration);
 app.component('finish-form', FinishForm);
 app.component('input-field', InputField);
+app.component('tekton-airlines', TektonAirlines);
+app.component('review-title', ReviewTitle);
+app.component('show-the-forms', ShowTheForms);
 
 app.use(store);
 app.mount('#app');
