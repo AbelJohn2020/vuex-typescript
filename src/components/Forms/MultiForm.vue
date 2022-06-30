@@ -29,9 +29,10 @@
                 @input="handleInDocument" 
                 :disabled="documentDisabled"
             />
-            <p v-if="invalidId('dni')">8 characters to ID</p>
-            <p v-else-if="invalidId('passport')">9 characters to Passport</p>
-            <p v-else-if="invalidId('ce')">9 characters to CE</p>
+            <p v-if="$store.state.letters">Invalid characters</p>
+            <p v-if="!$store.state.letters && invalidId('dni')">8 characters to ID</p>
+            <p v-else-if="!$store.state.letters && invalidId('passport')">9 characters to Passport</p>
+            <p v-else-if="!$store.state.letters && invalidId('ce')">9 characters to CE</p>
         </div>
     </div>
 </template>
@@ -105,6 +106,7 @@ import { Options, Vue } from "vue-class-component";
         handleInDocument(event: Event) {
             const idx = this.idx;
             this.$store.commit('documentField', {event, idx});
+            this.$store.commit('documentError', idx);
 
             this.$store.commit('validMultipleForm', idx);
         },

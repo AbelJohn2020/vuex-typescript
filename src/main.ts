@@ -9,6 +9,7 @@ import InputField from './components/UI/InputField.vue';
 import TektonAirlines from './pages/TektonAirlines.vue';
 import ReviewTitle from './components/UI/ReviewTitle.vue';
 import ShowTheForms from './components/Forms/ShowTheForms.vue';
+import SelectYourTicket from './components/UI/SelectYourTicket.vue';
 
 import App from './App.vue';
 
@@ -38,6 +39,7 @@ type user = {
 
 type state = {
     user: user,
+    letters: boolean,
     continue: string,
     language: string,
     users: user[] | [],
@@ -76,6 +78,7 @@ const store = createStore({
                 },
             },
 
+            letters: false,
             continue: 'form',
             language: 'english',
             users: [],
@@ -143,6 +146,17 @@ const store = createStore({
                 state.users[idx] = { ...state.users[idx], fieldDocument: { ...state.users[idx].fieldDocument, validDocument: 'valid' }};
             } else {
                 state.users[idx] = { ...state.users[idx], fieldDocument: { ...state.users[idx].fieldDocument, validDocument: 'invalid' }};
+            }
+        },
+
+        documentError(state: state, idx: number) {
+            const documentValue = state.users[idx].fieldDocument.document;
+            const validDocument = state.regNumbers.test(documentValue);
+
+            if(validDocument) {
+                state.letters = false;
+            } else {
+                state.letters = true;
             }
         },
 
@@ -230,6 +244,7 @@ const store = createStore({
             };
 
             state.language= 'english';
+            state.letters= false;
             state.users= [];
             state.validMultiForm= [];
             
@@ -248,6 +263,7 @@ app.component('input-field', InputField);
 app.component('tekton-airlines', TektonAirlines);
 app.component('review-title', ReviewTitle);
 app.component('show-the-forms', ShowTheForms);
+app.component('select-your-ticket', SelectYourTicket);
 
 app.use(store);
 app.mount('#app');

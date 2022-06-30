@@ -2,24 +2,17 @@
   <finish-form v-if="$store.state.continue === 'finish'"></finish-form>
   
   <div v-else>
-    <select name="tickets" id="tickets" :value="$store.state.tickets" @input="handleSelect">
-        <option value="0" disabled selected="selected"> Choose an Option</option>
-        <option v-for="number in $store.state.maxTickets" :key="number" :value="number"> {{ number }}</option>
-    </select>
-
     <div v-if="$store.state.users.length > 0">
-        <show-the-forms :getTickets="getTickets"></show-the-forms>
+        <show-the-forms :getTickets="getTickets" :handleSelect="handleSelect"></show-the-forms>
     </div>
-    <div v-else id="form">
-        <h1>Welcome to Tekton Airlines</h1>
-        <h3>Please take your tickets.</h3>
-        <h3>Each user can buy up to 4 tickets.</h3>
-        <h3>Have fun!</h3>
-
-        <select name="tickets" id="tickets" :value="$store.state.tickets" @input="handleSelect">
-            <option value="0" disabled selected="selected"> Choose an Option</option>
-            <option v-for="number in $store.state.maxTickets" :key="number" :value="number"> {{ number }}</option>
-        </select>
+    <div v-else class="finish">
+        <div id="form">
+            <h1>Welcome to Tekton Airlines</h1>
+            <h3>Please take your tickets.</h3>
+            <h3>Each user can buy up to 4 tickets.</h3>
+            <h3>Have fun travelling!</h3>
+            <select-your-ticket :handleSelect="handleSelect" :isWelcome="true"></select-your-ticket>
+        </div>
     </div>
   </div>
 </template>

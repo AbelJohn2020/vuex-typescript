@@ -14,14 +14,16 @@
             </div>
         </div>
         <div v-else>
-          <ul>
-            <li v-for="ticket in getTickets()" :key="ticket">
-              <multi-form :user="$store.state.users" :id="parseInt(ticket)"></multi-form>
-            </li>
-          </ul>
-          <div>
-            <the-button :is-disabled="enableSubmit" type-button="button" name="next" @click="handleNext"></the-button>
-          </div>
+            <h3 id="more-tickets">If you want more tickets: </h3>
+            <select-your-ticket :handleSelect="handleSelect" :isWelcome="false"></select-your-ticket>
+            <ul>
+                <li v-for="ticket in getTickets()" :key="ticket">
+                <multi-form :user="$store.state.users" :id="parseInt(ticket)"></multi-form>
+                </li>
+            </ul>
+            <div>
+                <the-button :is-disabled="enableSubmit" type-button="button" name="next" @click="handleNext"></the-button>
+            </div>
         </div>
     </form>
 </template>
@@ -30,7 +32,7 @@
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
-    props:['getTickets'],
+  props:['getTickets', 'handleSelect'],
   computed: {
     enableSubmit() {
       return this.$store.state.validMultiForm.includes(false) ? true : false;
@@ -48,10 +50,13 @@ import { Options, Vue } from 'vue-class-component';
     },
   }
 })
-export default class TektonAirlines extends Vue {
+export default class ShowTheForm extends Vue {
 }
 </script>
 
 <style>
-
+    #more-tickets {
+        box-sizing: border-box;
+        text-align: center;
+    }
 </style>
