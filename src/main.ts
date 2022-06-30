@@ -2,7 +2,6 @@ import { createApp } from 'vue';
 import { createStore } from 'vuex';
 
 import MultiForm from './components/MultiForm.vue';
-import TheForm from './components/TheForm.vue';
 import TheButton from './components/TheButton.vue';
 import TheRegistration from './components/TheRegistration.vue';
 import FinishForm from './components/FinishForm.vue';
@@ -44,6 +43,7 @@ type state = {
     regNationality: RegExp,
     maxTickets: number[],
     tickets: number,
+    validMultiForm: boolean[] | [],
 }
 
 const store = createStore({
@@ -76,8 +76,9 @@ const store = createStore({
             continue: 'form',
             language: 'english',
             users: [],
+            validMultiForm: [],
             
-            maxTickets: Array.from({length: 3}, (_, i) => i + 2),
+            maxTickets: Array.from({length: 4}, (_, i) => i + 1),
             tickets: 0,
             regNumbers: /^[0-9]+$/,
             regex: /^[a-zñ A-ZÑáéíóúÁÉÍÓÚ'.]*$/,
@@ -85,47 +86,6 @@ const store = createStore({
         };
     },
     mutations: {
-        handleNext(state: state) {
-            console.log(state.user)
-            state.continue = 'review';
-        },
-
-        handleBack(state: state) {
-            state.continue = 'form';
-        },
-
-        handleAccept(state: state) {
-            state.continue = 'form';
-        },
-        
-        handleSubmit(state: state) {
-            state.user = {
-                id: 0,
-                fieldName: {
-                    name: '',
-                    validName: 'pending',
-                },
-                fieldLastname: {
-                    lastname: '',
-                    validLastname: 'pending',
-                },
-                fieldNationality: {
-                    nationality: '',
-                    validNationality: 'pending',
-                },
-                fieldIdentification: {
-                    identification: '',
-                    validIdentification: 'pending',
-                },
-                fieldDocument: {
-                    document: '',
-                    validDocument: 'pending',
-                },
-            },
-
-            state.continue = 'finish';
-        },
-
         identificationField(state: state, identification: string) {
             if(identification === '') {
                 state.user.fieldIdentification.validIdentification = 'invalid';
@@ -172,6 +132,31 @@ const store = createStore({
         },
         
         //------------------------------------- MULTIFORM --------------------------------------------------
+        handleBack(state: state) {
+            state.continue = 'form';
+        },
+
+        handleAccept(state: state) {
+            state.continue = 'form';
+        },
+
+        handleNext(state: state) {
+            state.continue = 'review';
+        },
+
+        getTickets(state: state) {
+            Array.from({length: state.tickets}, (_, i) => i + 1)
+        },
+
+        multiForm(state: state, tickets: number) {
+            let i;
+            state.validMultiForm = [];
+
+            for(i= 0; i < tickets; i++) {
+                state.validMultiForm = [...state.validMultiForm, false]
+            }
+            return state.validMultiForm;
+        },
 
         typeIDField(state: state, identification: {event: Event, idx: number}) {
             const { event, idx } = identification;
@@ -245,13 +230,60 @@ const store = createStore({
                 state.users[idx] = {...state.users[idx], fieldIdentification: {...state.users[idx].fieldIdentification, validIdentification: 'invalid'}}
             }
         },
+
+        validMultipleForm(state: state, idx: number) {
+            const validName = state.users[idx].fieldName.validName;
+            const validLastname = state.users[idx].fieldLastname.validLastname;
+            const validNationality = state.users[idx].fieldNationality.validNationality;
+            const validIdentification = state.users[idx].fieldIdentification.validIdentification;
+            const validDocument = state.users[idx].fieldDocument.validDocument;
+
+            if(validName === 'valid' && validLastname === 'valid' && validNationality === 'valid' && validIdentification === 'valid' && validDocument === 'valid') {
+                state.validMultiForm[idx] = true;
+            } else {
+                state.validMultiForm[idx] = false;
+            }
+        },
+
+        handleSubmit(state: state) {
+            state.continue= 'finish';
+
+            state.user= {
+                id: 0,
+                fieldName: {
+                    name: '',
+                    validName: 'pending',
+                },
+                fieldLastname: {
+                    lastname: '',
+                    validLastname: 'pending',
+                },
+                fieldNationality: {
+                    nationality: '',
+                    validNationality: 'pending',
+                },
+                fieldIdentification: {
+                    identification: '',
+                    validIdentification: 'pending',
+                },
+                fieldDocument: {
+                    document: '',
+                    validDocument: 'pending',
+                },
+            };
+
+            state.language= 'english';
+            state.users= [];
+            state.validMultiForm= [];
+            
+            state.tickets= 0;
+        },
     },
 });
 
 const app = createApp(App);
 
-app.component('multi-form', MultiForm)
-app.component('the-form', TheForm);
+app.component('multi-form', MultiForm);
 app.component('the-button', TheButton);
 app.component('the-registration', TheRegistration);
 app.component('finish-form', FinishForm);

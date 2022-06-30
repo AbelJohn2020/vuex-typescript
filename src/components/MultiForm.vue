@@ -1,26 +1,11 @@
 <template>
-  <form @submit.prevent="handleSubmit" :id="idx">
-    <!-- <div v-if="$store.state.continue === 'review'">
-        <div class="review">
-            <div class="edit-box">
-                <the-button type-button="button" name="<" @click="handleBack" class="edit-btn"></the-button>
-            </div>
-            <h2>review</h2>
-        </div>
-        <the-registration ></the-registration>
-        <div class="submit-box">
-            <the-button :is-disabled="enableSubmit" name="submit"></the-button>
-        </div>
-    </div>
-    <div v-else> -->
-    <div>
+    <div :key="id" id="form">
         <input-field for-label="name" :validation="invalidField(user[idx].fieldName.validName)">
             <input placeholder="Name" type="text" :value="user[idx].fieldName.name" @input="handleInName" @blur="onBlurName"/>
         </input-field>
         
         <input-field for-label="lastname" :validation="invalidField(user[idx].fieldLastname.validLastname)">
             <input placeholder="Lastname" type="text" :value="user[idx].fieldLastname.lastname" @input="handleInLastname" @blur="onBlurLastname"/>
-            <!-- <input placeholder="Lastname" type="text" @input="handleInLastname"/> -->
         </input-field>
 
         <input-field for-label="nationality" :validation="invalidField(user[idx].fieldNationality.validNationality)">
@@ -48,12 +33,7 @@
             <p v-else-if="invalidId('passport')">9 characters to Passport</p>
             <p v-else-if="invalidId('ce')">9 characters to CE</p>
         </div>
-
-        <div>
-        <the-button name="send"></the-button>
-        </div>
     </div>
-  </form>
 </template>
 
 <script lang="ts">
@@ -63,7 +43,6 @@ import { Options, Vue } from "vue-class-component";
     props: ['user', 'id'],
     data() {
         return {
-            // document: this.user && this.user.fieldDocument.document,
             idx: this.id - 1,
         };
     },
@@ -95,32 +74,42 @@ import { Options, Vue } from "vue-class-component";
         },
         onBlurName() {
             this.$store.commit('onBlurName', this.idx);
+
+            this.$store.commit('validMultipleForm', this.idx);
         },
         handleInLastname(event: Event) {
             this.user[this.idx] = {...this.user[this.idx], fieldLastname: {...this.user[this.idx].fieldLastname, lastname: (event.target as HTMLInputElement).value}};
         },
         onBlurLastname() {
             this.$store.commit('onBlurLastname', this.idx);
+
+            this.$store.commit('validMultipleForm', this.idx);
         },
         handleInNationality(event: Event) {
-            this.user[this.idx] = { ...this.user[this.idx], fieldNationality: {...this.user[this.idx].fieldNationality, nationality: (event.target as HTMLInputElement).value}}
+            this.user[this.idx] = { ...this.user[this.idx], fieldNationality: {...this.user[this.idx].fieldNationality, nationality: (event.target as HTMLInputElement).value}};
         },
         onBlurNationality() {
-            this.$store.commit('onBlurNationality', this.idx)
+            this.$store.commit('onBlurNationality', this.idx);
+
+            this.$store.commit('validMultipleForm', this.idx);
         },
         handleInIdentification(event: Event) {
             const idx = this.idx;
             this.$store.commit('typeIDField', {event, idx});
         },
         onBlurIdentification() {
-            this.$store.commit('onBlurIdentification', this.idx)
+            this.$store.commit('onBlurIdentification', this.idx);
+
+            this.$store.commit('validMultipleForm', this.idx);
         },
         handleInDocument(event: Event) {
             const idx = this.idx;
             this.$store.commit('documentField', {event, idx});
+
+            this.$store.commit('validMultipleForm', idx);
         },
         onBlurDocument() {
-            this.$store.commit('onBlurIdentification', this.idx)
+            this.$store.commit('onBlurIdentification', this.idx);
         },
     }
 })
@@ -130,15 +119,6 @@ export default class MultiForm extends Vue {}
 </script>
 
 <style scoped>
-form {
-  margin: 2rem auto;
-  max-width: 30rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  padding: 2rem;
-  background-color: #ffffff;
-}
-
 .form-control.invalid input,
 .form-control.invalid select {
   border-color: red;
