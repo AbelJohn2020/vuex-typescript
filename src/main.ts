@@ -92,6 +92,19 @@ const store = createStore({
         };
     },
     mutations: {
+        handleChangeSelect (state: state, event: Event) {
+            state.tickets = parseInt((event.target as HTMLInputElement).value);
+        },
+        handleSelect(state: state, getTickets: number[]) {
+            let ticket: string;
+            state.users = [];
+            const users: user[] = state.users;
+      
+            for(ticket in getTickets) {
+                users.push({...state.user, id: parseInt(ticket)})
+            }
+            return users;
+        },
 
         handleBack(state: state) {
             state.continue = 'form';
