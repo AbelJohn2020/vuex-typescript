@@ -23,7 +23,7 @@ import { Options, Vue } from 'vue-class-component';
 @Options({
   methods: {
     getTickets() {
-      return Array.from({length: this.$store.state.tickets}, (_, i) => i + 1)
+        return this.$store.getters.getTickets;
     },
     handleSelect(event: Event) {
       this.$store.state.tickets = (event.target as HTMLInputElement).value;
@@ -41,7 +41,7 @@ import { Options, Vue } from 'vue-class-component';
       }
         console.log(this.getTickets())
       return users;
-    },
+    }
   }
 })
 export default class TektonAirlines extends Vue {

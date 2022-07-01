@@ -86,7 +86,8 @@ import { Options, Vue } from "vue-class-component";
             return this.invalidField(this.user[this.idx].fieldDocument.validDocument) && this.user[this.idx].fieldIdentification.identification === option;
         },
         handleInName(event: Event) {
-            this.user[this.idx] = {...this.user[this.idx], fieldName: {...this.user[this.idx].fieldName, name: (event.target as HTMLInputElement).value}};
+            const idx = this.idx;
+            this.$store.commit('handleInName', { idx, event });
         },
         onBlurName() {
             this.$store.commit('onBlurName', this.idx);
@@ -94,7 +95,8 @@ import { Options, Vue } from "vue-class-component";
             this.$store.commit('validMultipleForm', this.idx);
         },
         handleInLastname(event: Event) {
-            this.user[this.idx] = {...this.user[this.idx], fieldLastname: {...this.user[this.idx].fieldLastname, lastname: (event.target as HTMLInputElement).value}};
+            const idx = this.idx;
+            this.$store.commit('handleInLastname', { idx, event });
         },
         onBlurLastname() {
             this.$store.commit('onBlurLastname', this.idx);
@@ -102,7 +104,8 @@ import { Options, Vue } from "vue-class-component";
             this.$store.commit('validMultipleForm', this.idx);
         },
         handleInNationality(event: Event) {
-            this.user[this.idx] = { ...this.user[this.idx], fieldNationality: {...this.user[this.idx].fieldNationality, nationality: (event.target as HTMLInputElement).value}};
+            const idx = this.idx;
+            this.$store.commit('handleInNationality', { idx, event });
         },
         onBlurNationality() {
             this.$store.commit('onBlurNationality', this.idx);

@@ -7,7 +7,7 @@ import TheRegistration from './components/Forms/TheRegistration.vue';
 import FinishForm from './components/Forms/FinishForm.vue';
 import InputField from './components/UI/InputField.vue';
 import TektonAirlines from './pages/TektonAirlines.vue';
-import ReviewTitle from './components/UI/ReviewTitle.vue';
+import ReviewTitle from './components/layouts/ReviewTitle.vue';
 import ShowTheForms from './components/Forms/ShowTheForms.vue';
 import SelectYourTicket from './components/UI/SelectYourTicket.vue';
 
@@ -92,6 +92,7 @@ const store = createStore({
         };
     },
     mutations: {
+
         handleBack(state: state) {
             state.continue = 'form';
         },
@@ -116,6 +117,21 @@ const store = createStore({
                 state.validMultiForm = [...state.validMultiForm, false]
             }
             return state.validMultiForm;
+        },
+
+        handleInName(state:state, name: {idx: number, event: Event}) {
+            const { idx, event } = name
+            state.users[idx] = {...state.users[idx], fieldName: {...state.users[idx].fieldName, name: (event.target as HTMLInputElement).value}};
+        },
+
+        handleInLastname(state:state, lastname: {idx: number, event: Event}) {
+            const { idx, event } = lastname;
+            state.users[idx] = {...state.users[idx], fieldLastname: {...state.users[idx].fieldLastname, lastname: (event.target as HTMLInputElement).value}};
+        },
+
+        handleInNationality(state:state, nationality: {idx: number, event: Event}) {
+            const { idx, event } = nationality;
+            state.users[idx] = { ...state.users[idx], fieldNationality: {...state.users[idx].fieldNationality, nationality: (event.target as HTMLInputElement).value}};
         },
 
         typeIDField(state: state, identification: {event: Event, idx: number}) {
@@ -249,6 +265,12 @@ const store = createStore({
             state.validMultiForm= [];
             
             state.tickets= 0;
+        },
+    },
+
+    getters: {
+        getTickets(state: state) {
+            return Array.from({length: state.tickets}, (_, i) => i + 1)
         },
     },
 });
