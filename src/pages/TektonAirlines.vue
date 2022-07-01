@@ -26,21 +26,11 @@ import { Options, Vue } from 'vue-class-component';
         return this.$store.getters.getTickets;
     },
     handleSelect(event: Event) {
-      this.$store.state.tickets = (event.target as HTMLInputElement).value;
-      this.$store.state.continue = 'form';
-      this.$store.commit('multiForm', this.$store.state.tickets);
+        this.$store.commit('handleChangeSelect', event);
+        const getTickets = this.getTickets()
 
-      let ticket;
-      this.$store.state.users = [];
-      const users = this.$store.state.users;
-
-      for(ticket in this.getTickets()) {
-        if(ticket) {
-          users.push({...this.$store.state.user, id: parseInt(ticket)})
-        }
-      }
-        console.log(this.getTickets())
-      return users;
+        this.$store.commit('handleSelect', getTickets);
+        this.$store.commit('multiForm', this.$store.state.tickets);
     }
   }
 })
