@@ -1,4 +1,4 @@
-import { state, user } from '../store';
+import { state, user } from './types';
 
 export default {
     handleChangeSelect (state: state, event: Event) {

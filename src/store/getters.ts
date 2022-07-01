@@ -1,4 +1,4 @@
-import { state } from '../store';
+import { state } from './types';
 
 export default {
     getTickets(state: state) {
