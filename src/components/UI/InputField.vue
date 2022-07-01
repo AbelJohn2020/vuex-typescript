@@ -1,6 +1,9 @@
 <template>
   <div class="form-control" :class="{invalid: validation}">
-    <label :for="forLabel">{{ forLabel }}</label>
+    <label :for="forLabel" id="for-label">
+      {{ forLabel }}
+      <slot name="valid"></slot>
+    </label>
     <slot></slot>
     <p v-if="validation">invalid field</p>
   </div>
@@ -23,12 +26,16 @@ export default {
   flex-direction: column;
 }
 
+#for-label {
+  display: flex;
+}
+
 label {
     text-transform: capitalize;
 }
 
 label, p {
-    box-sizing: border-box;
+  box-sizing: border-box;
   font-weight: bold;
   text-align: start;
 }
