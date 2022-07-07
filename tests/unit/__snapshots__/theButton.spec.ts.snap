@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing Button component Should have a name 1`] = `<button>test button</button>`;
+
+exports[`Testing Button component Should have name and type 1`] = `<button type="submit">test button</button>`;
+
+exports[`Testing Button component Should have name, type and disabled 1`] = `<button type="submit" disabled="">test dissabled button</button>`;
