@@ -3,7 +3,7 @@
     <select-your-ticket :handleSelect="handleSelect" :isWelcome="false"></select-your-ticket>
     <ul>
         <li v-for="ticket in getTickets()" :key="ticket">
-          <multi-form :user="$store.state.users" :id="parseInt(ticket)"></multi-form>
+            <multi-form :user="$store.state.users" :id="parseInt(ticket)"></multi-form>
         </li>
     </ul>
     <div>
@@ -16,7 +16,7 @@
 
     @Options({
         inject:['getTickets', 'handleSelect'],
-        
+
         computed: {
             enableSubmit() {
                 return this.$store.getters.enableSubmit;
@@ -27,6 +27,12 @@
             handleNext() {
                 this.$store.commit('handleNext');
             },
+        },
+
+        mounted() {
+            if(this.$store.state.users.length === 0) {
+                this.$router.push('/')
+            }
         },
     })
 

@@ -1,27 +1,14 @@
 <template>
-  <finish-form v-if="$store.state.continue === 'finish'"></finish-form>
-  
-  <div v-else>
-    <div v-if="$store.state.users.length > 0">
-      <form @submit.prevent="handleSubmit">
-        <div v-if="$store.state.continue === 'review'">
-            <review-forms></review-forms>
+      <!-- <finish-form v-if="$store.state.continue === 'finish'"></finish-form>
+      <div v-else>
+        <div v-if="$store.state.users.length > 0">
+            <the-forms-and-review></the-forms-and-review>
         </div>
-        <div v-else>
-            <the-forms></the-forms>
+        <div v-else class="finish">
+              <the-welcome></the-welcome>
         </div>
-      </form>
-    </div>
-    <div v-else class="finish">
-        <div id="form">
-            <h1>Welcome to Tekton Airlines</h1>
-            <h3>Please take your tickets.</h3>
-            <h3>Each user can buy up to 4 tickets.</h3>
-            <h3>Have fun travelling!</h3>
-            <select-your-ticket :handleSelect="handleSelect" :isWelcome="true"></select-your-ticket>
-        </div>
-    </div>
-  </div>
+      </div> -->
+      <router-view></router-view>
 </template>
 
 <script lang="ts">
@@ -39,10 +26,6 @@ import { Options, Vue } from 'vue-class-component';
 
         this.$store.commit('handleSelect', getTickets);
         this.$store.commit('multiForm', this.$store.state.tickets);
-    },
-
-    handleSubmit() {
-      this.$store.commit('handleSubmit')
     },
   },
 
