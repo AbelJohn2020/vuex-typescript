@@ -1,13 +1,4 @@
 <template>
-      <!-- <finish-form v-if="$store.state.continue === 'finish'"></finish-form>
-      <div v-else>
-        <div v-if="$store.state.users.length > 0">
-            <the-forms-and-review></the-forms-and-review>
-        </div>
-        <div v-else class="finish">
-              <the-welcome></the-welcome>
-        </div>
-      </div> -->
       <router-view></router-view>
 </template>
 
