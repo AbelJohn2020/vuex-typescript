@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input Field Nationality Should return Invalid Field 1`] = `
+<div class="form-control invalid"><label for="nationality" id="for-label">nationality </label><input placeholder="Name" id="name" type="text">
+  <p>invalid field</p>
+</div>
+`;
+
+exports[`Input Field Nationality should return Valid Field 1`] = `
+<div class="form-control"><label for="nationality" id="for-label">nationality <p>valid field</p></label><input placeholder="Name" id="name" type="text">
+  <!--v-if-->
+</div>
+`;
+
+exports[`Input field Name Should return Invalid Field 1`] = `
+<div class="form-control invalid"><label for="name" id="for-label">name </label><input placeholder="Name" id="name" type="text">
+  <p>invalid field</p>
+</div>
+`;
+
+exports[`Input field Name should return Valid Field 1`] = `
+<div class="form-control"><label for="name" id="for-label">name <p>valid field</p></label><input placeholder="Name" id="name" type="text">
+  <!--v-if-->
+</div>
+`;
