@@ -123,3 +123,63 @@ describe('Input Field Nationality', () => {
         expect(test.html()).toMatchSnapshot();
     });
   })
+
+  describe('Input Field Identification', () => { 
+    const wrapper = mount(InputField, {
+        slots: {
+            default: `
+                <input placeholder="Name" id="name" type="text" v-model="valueIdentification"/>
+            `,
+        },
+        props: {
+            forLabel: 'ID',
+            validation: false
+        },
+        data() {
+            return {
+                valueIdentification: '',
+            };
+        },
+    });
+
+    const inputValue = wrapper.find('input[type="text"]');
+    const regex = store.state.regNumbers;
+
+
+    test('The default Slot in InputField will be Peruano', async () => { 
+
+        await inputValue.setValue('123456789');
+        expect((inputValue.element as HTMLInputElement).value).toBe('123456789');
+    });
+
+    test('Should return Invalid Field', async () => { 
+
+        await inputValue.setValue("12345678d");
+
+        const isNotValid = mount(InputField, {
+            ...wrapper, 
+            slots:{ default: '<input placeholder="Name" id="name" type="text" v-model="valueIdentification"/>' },
+            props: {...wrapper.props(), validation: true}
+        });
+
+        const notValid = regex.test((inputValue.element as HTMLInputElement).value);
+
+        expect(notValid).toBe(false);
+        expect(isNotValid.find('p').element.textContent).toContain('invalid field');
+        expect(isNotValid.html()).toMatchSnapshot();
+     });
+
+    test('should return Valid Field', async () => { 
+        await inputValue.setValue('123456789');
+        const valid = regex.test((inputValue.element as HTMLInputElement).value);
+        const test = mount(InputField, {
+            ...wrapper, 
+            slots:{ default: '<input placeholder="Name" id="name" type="text" v-model="valueIdentification"/>', valid: '<p>valid field</p>' }, 
+            props: {...wrapper.props()}
+        });
+
+        expect(valid).toBe(true);
+        expect(test.find('p').element.textContent).toContain('valid fiel');
+        expect(test.html()).toMatchSnapshot();
+    });
+  })
