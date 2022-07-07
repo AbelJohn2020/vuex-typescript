@@ -3,6 +3,7 @@ import rootGetters from './getters';
 import rootMutations from './mutations';
 
 const store = createStore({
+    
     state() {
         return {
             user: {

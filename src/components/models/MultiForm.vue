@@ -1,21 +1,21 @@
 <template>
     <div :key="id" id="form">
         <input-field for-label="name" :validation="invalidField(user[idx].fieldName.validName)">
-            <input placeholder="Name" type="text" :value="user[idx].fieldName.name" @input="handleInName" @blur="onBlurName"/>
+            <input placeholder="Name" id="name" type="text" :value="user[idx].fieldName.name" @input="handleInName" @blur="onBlurName"/>
             <template #valid>
                 <p v-if="user[idx].fieldName.validName === 'valid'" class="valid-field">valid</p>
             </template>
         </input-field>
         
         <input-field for-label="lastname" :validation="invalidField(user[idx].fieldLastname.validLastname)">
-            <input placeholder="Lastname" type="text" :value="user[idx].fieldLastname.lastname" @input="handleInLastname" @blur="onBlurLastname"/>
+            <input placeholder="Lastname" id="lastname" type="text" :value="user[idx].fieldLastname.lastname" @input="handleInLastname" @blur="onBlurLastname"/>
             <template #valid>
                 <p v-if="user[idx].fieldLastname.validLastname === 'valid'" class="valid-field">valid</p>
             </template>
         </input-field>
 
         <input-field for-label="nationality" :validation="invalidField(user[idx].fieldNationality.validNationality)">
-            <input placeholder="Nationality" type="text" :value="user[idx].fieldNationality.nationality" @input="handleInNationality" @blur="onBlurNationality"/>
+            <input placeholder="Nationality" id="nationality" type="text" :value="user[idx].fieldNationality.nationality" @input="handleInNationality" @blur="onBlurNationality"/>
             <template #valid>
                 <p v-if="user[idx].fieldNationality.validNationality === 'valid'" class="valid-field">valid</p>
             </template>
@@ -38,7 +38,8 @@
                 <p v-if="user[idx].fieldDocument.validDocument === 'valid'" class="valid-field">valid</p>
             </label>
             <input 
-                :placeholder="placeholderValue" 
+                :placeholder="placeholderValue"
+                id="document"
                 type="text" :maxlength="maxLengthByOption" 
                 :value="user[idx].fieldDocument.document" 
                 @input="handleInDocument" 

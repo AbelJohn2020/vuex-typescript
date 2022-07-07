@@ -1,7 +1,9 @@
 <template>
-  <select name="tickets" id="tickets" :value="$store.state.tickets" @input="handleSelect" :class="{welcome: isWelcome}">
+  <select name="tickets" id="tickets" :value="$store.state.tickets" @input="handleSelect" :class="{welcome: isWelcome}" @change="handleChange">
         <option value="0" disabled selected="selected"> Choose an Option</option>
-        <option v-for="number in $store.state.maxTickets" :key="number" :value="number"> {{ number }}</option>
+        <option v-for="number in $store.state.maxTickets" :key="number" :value="number"> 
+            {{ number }}
+        </option>
     </select>
 </template>
 
@@ -10,6 +12,16 @@ import { Options, Vue } from 'vue-class-component';
 
 @Options({
     props: ['handleSelect', 'isWelcome'],
+    methods: {
+        handleChange() {
+            //Routing: primera ruta
+            window.addEventListener('unload', this.goToForm());
+        },
+
+        goToForm() {
+            this.$router.push('/forms');
+        },
+    }
 })
 export default class SelectYourTicket extends Vue {
 }
