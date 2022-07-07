@@ -146,7 +146,7 @@ describe('Input Field Nationality', () => {
     const regex = store.state.regNumbers;
 
 
-    test('The default Slot in InputField will be Peruano', async () => { 
+    test('The default Slot in InputField will be only numbers', async () => { 
 
         await inputValue.setValue('123456789');
         expect((inputValue.element as HTMLInputElement).value).toBe('123456789');
