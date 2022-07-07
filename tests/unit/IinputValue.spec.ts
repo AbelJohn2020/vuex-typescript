@@ -35,19 +35,32 @@ describe('Input field', () => {
 
         await inputValue.setValue('Abel Antonio11');
 
-        const isNotValid = mount(InputField, {...wrapper, props: {...wrapper.props(), validation: true}})
+        const isNotValid = mount(InputField, {
+            ...wrapper, 
+            slots:{ default: '<input placeholder="Name" id="name" type="text" v-model="valueName"/>' },
+            props: {...wrapper.props(), validation: true}
+        });
+
         const notValid = regex.test((inputValue.element as HTMLInputElement).value);
 
         expect(notValid).toBe(false);
         expect(isNotValid.find('p').element.textContent).toContain('invalid field');
+        expect(isNotValid.html()).toMatchSnapshot();
      });
 
-    test('should first', async () => { 
+    test('should return Valid Field', async () => { 
         await inputValue.setValue('Abel John');
         const valid = regex.test((inputValue.element as HTMLInputElement).value);
-        const test = mount(InputField, {...wrapper, slots:{ default: '<input placeholder="Name" id="name" type="text" v-model="valueName"/>', valid: '<p>valid field</p>' }, props: {...wrapper.props()}})
+        const test = mount(InputField, {
+            ...wrapper, 
+            slots:{ default: '<input placeholder="Name" id="name" type="text" v-model="valueName"/>', valid: '<p>valid field</p>' }, 
+            props: {...wrapper.props()}
+        });
 
         expect(valid).toBe(true);
         expect(test.find('p').element.textContent).toContain('valid fiel');
+        expect(test.html()).toMatchSnapshot();
     });
+
+
  }) 
