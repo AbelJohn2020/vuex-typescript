@@ -13,9 +13,12 @@
 export default {
     methods: {
         handleAccept() {
-            this.$store.commit('handleAccept')
+            this.$store.commit('handleAccept');
+
+            // Routing: regresar a la pagina de bienvenida
+            window.addEventListener('click', () => this.$router.push('/'))
         },
-    }
+    },
 }
 </script>
 

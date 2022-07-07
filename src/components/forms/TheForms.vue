@@ -30,6 +30,7 @@
         },
 
         mounted() {
+            // Routing: si en el state user no tiene states entonces me envia a la pagina de inicio
             if(this.$store.state.users.length === 0) {
                 this.$router.push('/')
             }

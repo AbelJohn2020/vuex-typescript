@@ -15,7 +15,11 @@ import { Options, Vue } from 'vue-class-component';
 @Options({
   methods: {
     handleSubmit() {
-      this.$store.commit('handleSubmit')
+      this.$store.commit('handleSubmit');
+
+      if(this.$store.state.continue === 'finish') {
+        window.addEventListener('submit', () => this.$router.push('/finish'))
+      }
     },
   },
 })

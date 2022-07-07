@@ -14,7 +14,8 @@ import { Options, Vue } from 'vue-class-component';
     props: ['handleSelect', 'isWelcome'],
     methods: {
         handleChange() {
-            window.addEventListener('unload', this.goToForm())
+            //Routing: primera ruta
+            window.addEventListener('unload', this.goToForm());
         },
 
         goToForm() {
