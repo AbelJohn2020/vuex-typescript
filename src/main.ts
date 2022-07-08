@@ -11,6 +11,7 @@ import TheForms from './components/forms/TheForms.vue';
 import TheRegistration from './components/models/TheRegistration.vue';
 import TheWelcome from './pages/TheWelcome.vue';
 import TheFormsAndReview from './pages/TheFormsAndReview.vue';
+import ToggleButton from './components/UI/ToggleButton.vue';
 
 
 import App from './App.vue';
@@ -30,6 +31,7 @@ app.component('the-forms', TheForms);
 app.component('the-forms-and-review', TheFormsAndReview);
 app.component('the-registration', TheRegistration);
 app.component('the-welcome', TheWelcome);
+app.component('toggle-button', ToggleButton);
 
 app.use(store);
 app.use(router);

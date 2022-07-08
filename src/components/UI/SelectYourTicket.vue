@@ -1,5 +1,12 @@
 <template>
-  <select name="tickets" id="tickets" :value="$store.state.tickets" @input="handleSelect" :class="{welcome: isWelcome}" @change="handleChange">
+  <select 
+    name="tickets" 
+    id="tickets" 
+    :value="$store.state.tickets" 
+    @input="handleSelect" 
+    :class="{ welcome: isWelcome, english: $store.state.language === 'english', español: $store.state.language === 'español'}" 
+    @change="handleChange"
+>
         <option value="0" disabled selected="selected"> Choose an Option</option>
         <option v-for="number in $store.state.maxTickets" :key="number" :value="number"> 
             {{ number }}
@@ -30,13 +37,23 @@ export default class SelectYourTicket extends Vue {
 <style scoped>
     select {
         font: inherit;
-        border: 1px solid #0076bb;
-        background-color: #0076bb;
         font-weight: bold;
-        color: white;
         cursor: pointer;
         padding: 0.44rem 1.2rem;
         border-radius: 8px;
+        outline: none;
+    }
+
+    .english {
+        border: 1px solid #0076bb;
+        background-color: #0076bb;
+        color: white;
+    }
+
+    .español {
+        border: 1px solid #A51C30;
+        background-color: #A51C30;
+        color: white;
     }
 
     .welcome {
@@ -44,9 +61,19 @@ export default class SelectYourTicket extends Vue {
         appearance: none;
     }
 
-    select:hover,
-    select:active {
+    .english:hover,
+    .english:active {
         border-color: #002350;
         background-color: #002350;
+    }
+
+    .español:hover,
+    .español:active {
+        border-color: #881C30;
+        background-color: #881C30;
+    }
+
+    .español option {
+        background-color: #881C30;
     }
 </style>
