@@ -1,41 +1,41 @@
 <template>
     <div :key="id" id="form">
-        <input-field for-label="name" :validation="invalidField(user[idx].fieldName.validName)">
+        <input-field :for-label="language() ? 'name' : 'nombres'" :validation="invalidField(user[idx].fieldName.validName)">
             <input placeholder="Name" id="name" type="text" :value="user[idx].fieldName.name" @input="handleInName" @blur="onBlurName"/>
             <template #valid>
-                <p v-if="user[idx].fieldName.validName === 'valid'" class="valid-field">valid</p>
+                <p v-if="user[idx].fieldName.validName === 'valid'" class="valid-field">{{ language() ? 'valid' : 'válido' }}</p>
             </template>
         </input-field>
         
-        <input-field for-label="lastname" :validation="invalidField(user[idx].fieldLastname.validLastname)">
+        <input-field :for-label="language() ? 'lastname' : 'apellidos'" :validation="invalidField(user[idx].fieldLastname.validLastname)">
             <input placeholder="Lastname" id="lastname" type="text" :value="user[idx].fieldLastname.lastname" @input="handleInLastname" @blur="onBlurLastname"/>
             <template #valid>
-                <p v-if="user[idx].fieldLastname.validLastname === 'valid'" class="valid-field">valid</p>
+                <p v-if="user[idx].fieldLastname.validLastname === 'valid'" class="valid-field">{{ language() ? 'valid' : 'válido' }}</p>
             </template>
         </input-field>
 
-        <input-field for-label="nationality" :validation="invalidField(user[idx].fieldNationality.validNationality)">
+        <input-field :for-label="language() ? 'nationality' : 'nacionalidad'" :validation="invalidField(user[idx].fieldNationality.validNationality)">
             <input placeholder="Nationality" id="nationality" type="text" :value="user[idx].fieldNationality.nationality" @input="handleInNationality" @blur="onBlurNationality"/>
             <template #valid>
-                <p v-if="user[idx].fieldNationality.validNationality === 'valid'" class="valid-field">valid</p>
+                <p v-if="user[idx].fieldNationality.validNationality === 'valid'" class="valid-field">{{ language() ? 'valid' : 'válido' }}</p>
             </template>
         </input-field>
 
-        <input-field for-label="document type" :validation="invalidField(user[idx].fieldIdentification.validIdentification)">
+        <input-field :for-label="language() ? 'document type' : 'Documento'" :validation="invalidField(user[idx].fieldIdentification.validIdentification)">
             <select name="identification" id="identification" :value="user[idx].fieldIdentification.identification" @input="handleInIdentification" @blur="onBlurIdentification">
                 <option value="dni">DNI</option>
                 <option value="ce">CE</option>
                 <option value="passport">Passport</option>
             </select>
             <template #valid>
-                <p v-if="user[idx].fieldIdentification.validIdentification === 'valid'" class="valid-field">valid</p>
+                <p v-if="user[idx].fieldIdentification.validIdentification === 'valid'" class="valid-field">{{ language() ? 'valid' : 'válido' }}</p>
             </template>
         </input-field>
         
         <div class="form-control" :class="{invalid: invalidID}">
             <label for="document" id="for-label">
                 ID
-                <p v-if="user[idx].fieldDocument.validDocument === 'valid'" class="valid-field">valid</p>
+                <p v-if="user[idx].fieldDocument.validDocument === 'valid'" class="valid-field">{{ language() ? 'valid' : 'válido' }}</p>
             </label>
             <input 
                 :placeholder="placeholderValue"
@@ -45,10 +45,10 @@
                 @input="handleInDocument" 
                 :disabled="documentDisabled"
             />
-            <p v-if="$store.state.letters">Invalid characters</p>
-            <p v-if="!$store.state.letters && invalidId('dni')">8 characters to ID</p>
-            <p v-else-if="!$store.state.letters && invalidId('passport')">9 characters to Passport</p>
-            <p v-else-if="!$store.state.letters && invalidId('ce')">9 characters to CE</p>
+            <p v-if="$store.state.letters">{{language() ? 'Invalid characters' : 'Carteres invalidos' }}</p>
+            <p v-if="!$store.state.letters && invalidId('dni')">{{ language() ? '8 characters to DNI' : '8 caracteres para DNI' }}</p>
+            <p v-else-if="!$store.state.letters && invalidId('passport')">{{ language() ? '9 characters to Passport' : '9 caracteres para Pasaporte' }}</p>
+            <p v-else-if="!$store.state.letters && invalidId('ce')">{{ language() ? '9 characters to CE' : '9 caracteres para CE' }}</p>
         </div>
     </div>
 </template>
@@ -57,6 +57,7 @@
 import { Options, Vue } from "vue-class-component";
 
 @Options({
+    inject:['language'],
     props: ['user', 'id'],
     data() {
         return {

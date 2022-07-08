@@ -1,4 +1,5 @@
 <template>
+      <toggle-button></toggle-button>
       <router-view></router-view>
 </template>
 
@@ -18,12 +19,17 @@ import { Options, Vue } from 'vue-class-component';
         this.$store.commit('handleSelect', getTickets);
         this.$store.commit('multiForm', this.$store.state.tickets);
     },
+
+    language() {
+      return this.$store.getters.language;
+    },
   },
 
   provide() {
     return {
       getTickets: this.getTickets,
       handleSelect: this.handleSelect,
+      language: this.language,
     };
   },
 })

@@ -10,4 +10,20 @@ export default {
         const filterFalse = state.validMultiForm.filter(element => element === false);
         return filterFalse.length > 0 ? true : false;
     },
+
+    handleChecked(state: state) {
+        if(state.language === 'español') {
+            return true
+        } else {
+            return false;
+        }
+    },
+
+    language(state:state) {
+        if(state.language === 'english') {
+            return true
+        } else {
+            return false
+        }
+    }
 }

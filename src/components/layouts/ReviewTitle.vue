@@ -3,11 +3,19 @@
     <div class="edit-box">
         <slot></slot>
     </div>
-    <h2>review</h2>
+    <h2>{{ language() ? 'review' : 'revisión' }}</h2>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+    import { Options, Vue } from 'vue-class-component';
+
+    @Options({
+        inject:['language'],
+    })
+
+    export default class ReviewTitle extends Vue {
+    }
 </script>
 
 <style>

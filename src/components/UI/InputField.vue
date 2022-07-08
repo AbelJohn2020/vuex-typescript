@@ -5,12 +5,13 @@
       <slot name="valid"></slot>
     </label>
     <slot></slot>
-    <p v-if="validation">invalid field</p>
+    <p v-if="validation">{{ language() ? 'invalid field' : 'campo invalido' }}</p>
   </div>
 </template>
 
 <script>
 export default {
+    inject: ['language'],
     props: [
         'forLabel',
         'validation',

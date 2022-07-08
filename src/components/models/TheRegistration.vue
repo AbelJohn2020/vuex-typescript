@@ -1,24 +1,24 @@
 <template>
   <div id="form" class="review-a-form">
-    <h2>Ticket Nº {{ idx + 1 }}</h2>
+    <h2 :class="language() ? 'h2-english' : 'h2-español'">{{ language() ? 'Ticket Nº ' : 'Boleto Nº ' }} {{ idx + 1 }}</h2>
     <div class="form-review">
-      <label for="name">Name:</label>
+      <label for="name">{{ language() ? 'Name: ' : 'Nombres: ' }}</label>
       <h3>{{ $store.state.users[idx].fieldName.name }}</h3>
     </div>
     <div class="form-review">
-      <label for="lastname">Lastname:</label>
+      <label for="lastname">{{ language() ? 'Lastname: ' : 'Apellidos: ' }}</label>
       <h3>{{ $store.state.users[idx].fieldLastname.lastname }}</h3>
     </div>
     <div class="form-review">
-      <label for="nationality">Nationality:</label>
+      <label for="nationality">{{ language() ? 'Nationality: ' : 'Nacionalidad: ' }}</label>
       <h3 :class="{upper: upper, cap: !upper}">{{ $store.state.users[idx].fieldNationality.nationality }}</h3>
     </div>
     <div class="form-review">
-      <label for="identification">Identification:</label>
+      <label for="identification">{{  language() ? 'Identification: ' : 'Identificacion: '  }}</label>
       <h3 class="identification">{{ $store.state.users[idx].fieldIdentification.identification }}</h3>
     </div>
     <div class="form-review">
-      <label for="document">Document:</label>
+      <label for="document">{{  language() ? 'Document: ' : 'Documento: '  }}</label>
       <h3>{{ $store.state.users[idx].fieldDocument.document }}</h3>
     </div>
   </div>
@@ -29,6 +29,7 @@
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
+  inject:['language'],
   props: ['user', 'id'],
 
   data() {
@@ -48,10 +49,18 @@ export default class TheRegistration extends Vue {
 
 <style scoped>
   h2 {
-    border-bottom: 1px solid #0076bb;
     padding: 0 0 1rem 0;
     margin: 0 0 2rem 0;
   }
+
+  .h2-english {
+    border-bottom: 1px solid #0076bb;
+  }
+
+  .h2-español {
+    border-bottom: 1px solid #A51C30;
+  }
+
   .form-review {
     margin: 0.4rem 0;
     width: 100%;

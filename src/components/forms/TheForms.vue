@@ -1,5 +1,5 @@
 <template>
-    <h3 id="more-tickets">If you want more tickets: </h3>
+    <h3 id="more-tickets">{{ language() ? 'If you want more tickets:' : 'Si gustas mas tickets: ' }}</h3>
     <select-your-ticket :handleSelect="handleSelect" :isWelcome="false"></select-your-ticket>
     <ul>
         <li v-for="ticket in getTickets()" :key="ticket">
@@ -7,7 +7,7 @@
         </li>
     </ul>
     <div>
-        <the-button :is-disabled="enableSubmit" type-button="button" name="next" @click="handleNext"></the-button>
+        <the-button :is-disabled="enableSubmit" type-button="button" :name="language() ? 'next' : 'siguiente'" @click="handleNext"></the-button>
     </div>
 </template>
 
@@ -15,7 +15,7 @@
     import { Options, Vue } from 'vue-class-component';
 
     @Options({
-        inject:['getTickets', 'handleSelect'],
+        inject:['getTickets', 'handleSelect', 'language'],
 
         computed: {
             enableSubmit() {

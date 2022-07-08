@@ -1,6 +1,14 @@
 import { state, user } from './types';
 
 export default {
+    handleToggle(state: state, event: Event) {
+        if((event.target as HTMLInputElement).checked) {
+            state.language = 'español'
+        } else {
+            state.language = 'english'
+        }
+    },
+
     handleChangeSelect (state: state, event: Event) {
         state.tickets = parseInt((event.target as HTMLInputElement).value);
     },
@@ -21,6 +29,7 @@ export default {
 
     handleAccept(state: state) {
         state.continue = 'form';
+        state.language= 'english';
     },
 
     handleNext(state: state) {
@@ -180,8 +189,6 @@ export default {
                 validDocument: 'pending',
             },
         };
-
-        state.language= 'english';
         state.letters= false;
         state.users= [];
         state.validMultiForm= [];
