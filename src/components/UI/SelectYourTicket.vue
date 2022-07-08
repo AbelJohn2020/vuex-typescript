@@ -7,7 +7,7 @@
     :class="{ welcome: isWelcome, english: $store.state.language === 'english', español: $store.state.language === 'español'}" 
     @change="handleChange"
 >
-        <option value="0" disabled selected="selected"> Choose an Option</option>
+        <option value="0" disabled selected="selected"> {{ language() ? 'Choose an Option' : 'Elije una opción' }}</option>
         <option v-for="number in $store.state.maxTickets" :key="number" :value="number"> 
             {{ number }}
         </option>
@@ -18,6 +18,7 @@
 import { Options, Vue } from 'vue-class-component';
 
 @Options({
+    inject: ['language'],
     props: ['handleSelect', 'isWelcome'],
     methods: {
         handleChange() {

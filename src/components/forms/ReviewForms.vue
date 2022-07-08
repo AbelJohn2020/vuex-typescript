@@ -8,7 +8,7 @@
         </li>
     </ul>
     <div class="submit-box">
-        <the-button type-button="submit" :is-disabled="enableSubmit" name="submit"></the-button>
+        <the-button type-button="submit" :is-disabled="enableSubmit" :name="language() ? 'submit' : 'enviar'"></the-button>
     </div>
 </template>
 
@@ -16,7 +16,7 @@
     import { Options, Vue } from 'vue-class-component';
 
     @Options({
-        inject:['getTickets'],
+        inject:['getTickets', 'language'],
 
         computed: {
             enableSubmit() {
